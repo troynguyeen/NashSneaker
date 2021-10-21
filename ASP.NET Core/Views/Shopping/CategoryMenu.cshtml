@@ -1,0 +1,9 @@
+﻿@model IEnumerable<NashSneaker.Areas.Identity.Data.Category>
+<ul>
+    <li class="dropdown-header">Category</li>
+    <li role="separator" class="divider"></li>
+    @foreach (var item in Model)
+    {
+        <li><a href="#">@item.Name</a></li>
+    }
+</ul>
