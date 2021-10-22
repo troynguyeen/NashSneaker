@@ -172,6 +172,29 @@ namespace NashSneaker.Migrations
                     b.ToTable("Category");
                 });
 
+            modelBuilder.Entity("NashSneaker.Areas.Identity.Data.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Image");
+                });
+
             modelBuilder.Entity("NashSneaker.Areas.Identity.Data.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -186,9 +209,6 @@ namespace NashSneaker.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Images")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -329,6 +349,15 @@ namespace NashSneaker.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("NashSneaker.Areas.Identity.Data.Image", b =>
+                {
+                    b.HasOne("NashSneaker.Areas.Identity.Data.Product", "Product")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("NashSneaker.Areas.Identity.Data.Product", b =>
                 {
                     b.HasOne("NashSneaker.Areas.Identity.Data.Category", "Category")
@@ -341,6 +370,11 @@ namespace NashSneaker.Migrations
             modelBuilder.Entity("NashSneaker.Areas.Identity.Data.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("NashSneaker.Areas.Identity.Data.Product", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

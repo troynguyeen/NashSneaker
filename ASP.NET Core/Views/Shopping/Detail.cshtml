@@ -1,0 +1,228 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Header.cshtml";
+}
+
+@model NashSneaker.Areas.Identity.Data.Product
+
+<section class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="content">
+                    <h1 class="page-name">Shop</h1>
+                    <ol class="breadcrumb">
+                        <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+                        <li>@Model.Category.Name</li>
+                        <li class="active">@Model.Name</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="single-product">
+    <div class="container">
+        <div class="row mt-20">
+            <div class="col-md-5">
+                <div class="single-product-slider">
+                    <div id='carousel-custom' class='carousel slide' data-ride='carousel'>
+                        <div class='carousel-outer'>
+                            <div class='carousel-inner '>
+                                <div class='item active'>
+                                    <img src="~/@Model.Images.ElementAt(0).Url" alt="" data-zoom-image="~/@Model.Images.ElementAt(0).Url" />
+                                </div>
+                                @for (int i = 1; i < Model.Images.Count(); i++)
+                                {
+                                    <div class='item'>
+                                        <img src="~/@Model.Images.ElementAt(i).Url" alt="" data-zoom-image="~/@Model.Images.ElementAt(i).Url" />
+                                    </div>
+                                }
+                            </div>
+                            <!-- sag sol -->
+                            <a class='left carousel-control' href='#carousel-custom' data-slide='prev'>
+                                <i class="tf-ion-ios-arrow-left"></i>
+                            </a>
+                            <a class='right carousel-control' href='#carousel-custom' data-slide='next'>
+                                <i class="tf-ion-ios-arrow-right"></i>
+                            </a>
+                        </div>
+                        <!-- thumb -->
+                        <ol class='carousel-indicators mCustomScrollbar meartlab'>
+                            <li data-target='#carousel-custom' data-slide-to='0' class='active'>
+                                <img src='~/@Model.Images.ElementAt(0).Url' alt='' />
+                            </li>
+                            @for (int i = 1; i < Model.Images.Count(); i++)
+                            {
+                                <li data-target='#carousel-custom' data-slide-to=@i>
+                                    <img src='~/@Model.Images.ElementAt(i).Url' alt='' />
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="single-product-details">
+                    <h2>@Model.Name</h2>
+                    <p class="product-price" style="font-size: 18px;">@Model.Price VND</p>
+                    <div class="product-category">
+                        <span>Categories:</span>
+                        <ul>
+                            <li>@Model.Category.Name</li>
+                        </ul>
+                    </div>
+                    <div class="product-size">
+                        <span>Size:</span>
+                        <select class="form-control" style="width: auto; letter-spacing: unset; padding: 6px;">
+                            <option>39</option>
+                            <option>40</option>
+                            <option>41</option>
+                            <option>42</option>
+                        </select>
+                    </div>
+                    <div class="product-quantity">
+                        <span>Quantity:</span>
+                        <div class="product-quantity-slider">
+                            <input id="product-quantity" type="number" value="1" min="1" max="100" name="product-quantity">
+                        </div>
+                    </div>
+                    <a href="#!" class="btn btn-main mt-20">Add To Cart</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="tabCommon mt-20">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#details" aria-expanded="true">Details</a></li>
+                    </ul>
+                    <div class="tab-content patternbg">
+                        <div id="details" class="tab-pane fade active in">
+                            <h4>Product Description</h4>
+                            <p>@Model.Description</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="products related-products section">
+    <div class="container">
+        <div class="row">
+            <div class="title text-center">
+                <h2>Related Products</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="product-item">
+                    <div class="product-thumb">
+                        <span class="bage">Sale</span>
+                        <img class="img-responsive" src="~/images/home/pg5.jfif" alt="product-img" />
+                        <div class="preview-meta">
+                            <ul>
+                                <li>
+                                    <span data-toggle="modal" data-target="#product-modal">
+                                        <i class="tf-ion-ios-search"></i>
+                                    </span>
+                                </li>
+                                <li>
+                                    <a href="#!"><i class="tf-ion-ios-heart"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#!"><i class="tf-ion-android-cart"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h4><a href="product-single.html">Reef Boardsport</a></h4>
+                        <p class="price">$200</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-item">
+                    <div class="product-thumb">
+                        <img class="img-responsive" src="~/images/home/freak3.jfif" alt="product-img" />
+                        <div class="preview-meta">
+                            <ul>
+                                <li>
+                                    <span data-toggle="modal" data-target="#product-modal">
+                                        <i class="tf-ion-ios-search-strong"></i>
+                                    </span>
+                                </li>
+                                <li>
+                                    <a href="#!"><i class="tf-ion-ios-heart"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#!"><i class="tf-ion-android-cart"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h4><a href="product-single.html">Rainbow Shoes</a></h4>
+                        <p class="price">$200</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-item">
+                    <div class="product-thumb">
+                        <img class="img-responsive" src="~/images/home/alphafly_1.jfif" alt="product-img" />
+                        <div class="preview-meta">
+                            <ul>
+                                <li>
+                                    <span data-toggle="modal" data-target="#product-modal">
+                                        <i class="tf-ion-ios-search"></i>
+                                    </span>
+                                </li>
+                                <li>
+                                    <a href="#!"><i class="tf-ion-ios-heart"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#!"><i class="tf-ion-android-cart"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h4><a href="product-single.html">Strayhorn SP</a></h4>
+                        <p class="price">$230</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-item">
+                    <div class="product-thumb">
+                        <img class="img-responsive" src="~/images/home/one_take.jfif" alt="product-img" />
+                        <div class="preview-meta">
+                            <ul>
+                                <li>
+                                    <span data-toggle="modal" data-target="#product-modal">
+                                        <i class="tf-ion-ios-search"></i>
+                                    </span>
+                                </li>
+                                <li>
+                                    <a href="#!"><i class="tf-ion-ios-heart"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#!"><i class="tf-ion-android-cart"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h4><a href="product-single.html">Bradley Mid</a></h4>
+                        <p class="price">$200</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
