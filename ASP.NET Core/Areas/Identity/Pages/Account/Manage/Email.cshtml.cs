@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using NashSneaker.Areas.Identity.Data;
+using NashSneaker.Data;
 
 namespace NashSneaker.Areas.Identity.Pages.Account.Manage
 {

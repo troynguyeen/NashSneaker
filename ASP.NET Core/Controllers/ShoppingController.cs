@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NashSneaker.Areas.Identity.Data;
 using NashSneaker.Data;
 using System;
 using System.Collections.Generic;
