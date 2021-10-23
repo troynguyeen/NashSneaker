@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace NashSneaker.Areas.Identity.Data
+namespace NashSneaker.Data
 {
     // Add profile data for application users by adding properties to the User class
     public class User : IdentityUser

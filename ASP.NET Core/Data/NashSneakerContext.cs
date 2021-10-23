@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using NashSneaker.Areas.Identity.Data;
+using NashSneaker.Data;
 
 namespace NashSneaker.Data
 {

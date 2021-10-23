@@ -3,7 +3,7 @@
     Layout = "~/Views/Header.cshtml";
 }
 
-@model NashSneaker.Areas.Identity.Data.Product
+@model NashSneaker.Data.Product
 
 <section class="page-header">
     <div class="container">
@@ -30,12 +30,12 @@
                         <div class='carousel-outer'>
                             <div class='carousel-inner '>
                                 <div class='item active'>
-                                    <img src="~/@Model.Images.ElementAt(0).Url" alt="" data-zoom-image="~/@Model.Images.ElementAt(0).Url" />
+                                    <img src="~/@Model.Images.ElementAt(0).Path" alt="" data-zoom-image="~/@Model.Images.ElementAt(0).Path" />
                                 </div>
                                 @for (int i = 1; i < Model.Images.Count(); i++)
                                 {
                                     <div class='item'>
-                                        <img src="~/@Model.Images.ElementAt(i).Url" alt="" data-zoom-image="~/@Model.Images.ElementAt(i).Url" />
+                                        <img src="~/@Model.Images.ElementAt(i).Path" alt="" data-zoom-image="~/@Model.Images.ElementAt(i).Path" />
                                     </div>
                                 }
                             </div>
@@ -50,12 +50,12 @@
                         <!-- thumb -->
                         <ol class='carousel-indicators mCustomScrollbar meartlab'>
                             <li data-target='#carousel-custom' data-slide-to='0' class='active'>
-                                <img src='~/@Model.Images.ElementAt(0).Url' alt='' />
+                                <img src='~/@Model.Images.ElementAt(0).Path' alt='' />
                             </li>
                             @for (int i = 1; i < Model.Images.Count(); i++)
                             {
                                 <li data-target='#carousel-custom' data-slide-to=@i>
-                                    <img src='~/@Model.Images.ElementAt(i).Url' alt='' />
+                                    <img src='~/@Model.Images.ElementAt(i).Path' alt='' />
                                 </li>
                             }
                         </ol>

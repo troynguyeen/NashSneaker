@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NashSneaker.Areas.Identity.Data
+namespace NashSneaker.Data
 {
-    public class Image
+    public class Category
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Url { get; set; }
-        public virtual Product Product { get; set; }
+        public string Description { get; set; }
+        public virtual List<Product> Products { get; set; }
     }
 }

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NashSneaker.Areas.Identity.Data;
 using NashSneaker.Data;
 
 [assembly: HostingStartup(typeof(NashSneaker.Areas.Identity.IdentityHostingStartup))]
