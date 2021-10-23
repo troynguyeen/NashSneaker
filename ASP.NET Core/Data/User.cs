@@ -16,5 +16,6 @@ namespace NashSneaker.Data
         [PersonalData]
         [Column(TypeName = "nvarchar(100)")]
         public string LastName { get; set; }
+        public virtual List<Rating> Ratings { get; set; }
     }
 }

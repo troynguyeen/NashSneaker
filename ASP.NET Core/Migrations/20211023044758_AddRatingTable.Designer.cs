@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NashSneaker.Data;
 
 namespace NashSneaker.Migrations
 {
     [DbContext(typeof(NashSneakerContext))]
-    partial class NashSneakerContextModelSnapshot : ModelSnapshot
+    [Migration("20211023044758_AddRatingTable")]
+    partial class AddRatingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,51 +154,6 @@ namespace NashSneaker.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("NashSneaker.Data.Cart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("TotalAmount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Cart");
-                });
-
-            modelBuilder.Entity("NashSneaker.Data.CartDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CartId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("CartDetail");
                 });
 
             modelBuilder.Entity("NashSneaker.Data.Category", b =>
@@ -419,30 +376,6 @@ namespace NashSneaker.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NashSneaker.Data.Cart", b =>
-                {
-                    b.HasOne("NashSneaker.Data.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("NashSneaker.Data.CartDetail", b =>
-                {
-                    b.HasOne("NashSneaker.Data.Cart", "Cart")
-                        .WithMany("CartDetails")
-                        .HasForeignKey("CartId");
-
-                    b.HasOne("NashSneaker.Data.Product", "Product")
-                        .WithMany("CartDetails")
-                        .HasForeignKey("ProductId");
-
-                    b.Navigation("Cart");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("NashSneaker.Data.Image", b =>
                 {
                     b.HasOne("NashSneaker.Data.Product", "Product")
@@ -476,11 +409,6 @@ namespace NashSneaker.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("NashSneaker.Data.Cart", b =>
-                {
-                    b.Navigation("CartDetails");
-                });
-
             modelBuilder.Entity("NashSneaker.Data.Category", b =>
                 {
                     b.Navigation("Products");
@@ -488,8 +416,6 @@ namespace NashSneaker.Migrations
 
             modelBuilder.Entity("NashSneaker.Data.Product", b =>
                 {
-                    b.Navigation("CartDetails");
-
                     b.Navigation("Images");
 
                     b.Navigation("Ratings");

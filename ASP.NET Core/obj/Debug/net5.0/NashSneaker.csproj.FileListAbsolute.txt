@@ -344,3 +344,6 @@ C:\NashSneaker\ASP.NET Core\obj\Debug\net5.0\ref\NashSneaker.dll
 C:\NashSneaker\ASP.NET Core\obj\Debug\net5.0\NashSneaker.pdb
 C:\NashSneaker\ASP.NET Core\obj\Debug\net5.0\NashSneaker.genruntimeconfig.cache
 C:\NashSneaker\ASP.NET Core\obj\Debug\net5.0\Razor\Views\Shopping\Detail.cshtml.g.cs
+C:\NashSneaker\ASP.NET Core\obj\Debug\net5.0\Razor\Views\Cart\Index.cshtml.g.cs
+C:\NashSneaker\ASP.NET Core\obj\Debug\net5.0\Razor\Areas\Identity\Pages\Account\Logout.cshtml.g.cs
+C:\NashSneaker\ASP.NET Core\obj\Debug\net5.0\Razor\Views\Shared\_LoginPartial.cshtml.g.cs

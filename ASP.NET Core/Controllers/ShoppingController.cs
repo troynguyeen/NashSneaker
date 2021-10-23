@@ -61,8 +61,10 @@ namespace NashSneaker.Controllers
             {
                 var product = _context.Product.Where(product => product.Id == id && product.Name == productName).SingleOrDefault();
                 var imageList = _context.Image;
+                var ratingList = _context.Rating;
                 var category = _context.Category.ToList();
 
+                product.Ratings = ratingList.Where(rating => rating.Product.Id == product.Id).ToList();
                 product.Images = imageList.Where(image => image.Product.Id == product.Id).ToList();
                 product.Category = category.Where(category => category.Id == product.Category.Id).SingleOrDefault();
 
@@ -72,6 +74,31 @@ namespace NashSneaker.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        public void Rating(string userId, int productId, int level)
+        {
+            var user = _context.Users.SingleOrDefault(x => x.Id == userId);
+            var product = _context.Product.SingleOrDefault(x => x.Id == productId);
+
+            if(_context.Rating.Any(rating => rating.User == user && rating.Product == product))
+            {
+                var rating = _context.Rating.SingleOrDefault(x => x.User == user && x.Product == product);
+                rating.Level = level;
+            }
+            else
+            {
+                var rating = new Rating
+                {
+                    User = user,
+                    Product = product,
+                    Level = level
+                };
+
+                _context.Rating.Add(rating);
+            }
+
+            _context.SaveChanges();
         }
     }
 }

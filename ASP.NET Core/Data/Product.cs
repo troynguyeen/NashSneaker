@@ -15,5 +15,7 @@ namespace NashSneaker.Data
         public DateTime UpdatedDate { get; set; }
         public virtual Category Category { get; set; }
         public virtual List<Image> Images { get; set; }
+        public virtual List<Rating> Ratings { get; set; }
+        public virtual List<CartDetail> CartDetails { get; set; }
     }
 }
