@@ -102,11 +102,11 @@
                     </div>
                     <div class="product-size">
                         <span>Size:</span>
-                        <select class="form-control" style="width: auto; letter-spacing: unset; padding: 6px;">
-                            <option>39</option>
-                            <option>40</option>
-                            <option>41</option>
-                            <option>42</option>
+                        <select class="form-control" style="width: auto; letter-spacing: unset; padding: 6px;" id="dropDownSize">
+                            @foreach (var item in Model.Sizes)
+                            {
+                                <option>@item.Name</option>
+                            }
                         </select>
                     </div>
                     <div class="product-quantity">
@@ -260,6 +260,7 @@
         var userId = $("li[name=userAccount]").attr("data-content");
         var productId = parseInt($("div[name=productId]").attr("data-content"));
         var quantity = parseInt($("#product-quantity").val());
+        var size = parseInt($("#dropDownSize").val());
 
         if (userId != "") {
 
@@ -269,7 +270,8 @@
                 data: {
                     userId: userId,
                     productId: productId,
-                    quantity: quantity
+                    quantity: quantity,
+                    size: size
                 },
                 dataType: "text",
                 url: '/Cart/AddItemToCart',

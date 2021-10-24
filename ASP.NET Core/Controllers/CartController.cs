@@ -36,7 +36,7 @@ namespace NashSneaker.Controllers
             return View(cart);
         }
 
-        public JsonResult AddItemToCart(string userId, int productId, int quantity)
+        public JsonResult AddItemToCart(string userId, int productId, int quantity, int size)
         {
             string message = "";
             var user = _context.Users.SingleOrDefault(x => x.Id == userId);
@@ -46,9 +46,9 @@ namespace NashSneaker.Controllers
             {
                 var cart = _context.Cart.SingleOrDefault(x => x.User == user);
 
-                if(_context.CartDetail.Any(detail => detail.Cart == cart && detail.Product == product))
+                if(_context.CartDetail.Any(detail => detail.Cart == cart && detail.Product == product && detail.Size == size))
                 {
-                    var cartDetail = _context.CartDetail.SingleOrDefault(detail => detail.Cart == cart && detail.Product == product);
+                    var cartDetail = _context.CartDetail.SingleOrDefault(detail => detail.Cart == cart && detail.Product == product && detail.Size == size);
 
                     cartDetail.Quantity += quantity;
 
@@ -65,7 +65,8 @@ namespace NashSneaker.Controllers
                     {
                         Product = product,
                         Cart = cart,
-                        Quantity = quantity
+                        Quantity = quantity,
+                        Size = size
                     };
 
                     _context.CartDetail.Add(cartDetail);
@@ -83,7 +84,8 @@ namespace NashSneaker.Controllers
                 {
                     Product = product,
                     Cart = cart,
-                    Quantity = quantity
+                    Quantity = quantity,
+                    Size = size
                 };
 
                 cart.TotalAmount = (int) cartDetail.Product.Price * cartDetail.Quantity;
@@ -117,12 +119,12 @@ namespace NashSneaker.Controllers
             return Json(new { success = true, cartCounter = counter, message = message });
         }
 
-        public JsonResult UpdateItemInCart(string userId, int productId, int quantity)
+        public JsonResult UpdateItemInCart(string userId, int productId, int quantity, int size)
         {
             var user = _context.Users.SingleOrDefault(x => x.Id == userId);
             var product = _context.Product.SingleOrDefault(x => x.Id == productId);
             var cart = _context.Cart.SingleOrDefault(x => x.User == user);
-            var cartDetail = _context.CartDetail.SingleOrDefault(x => x.Cart.User == user && x.Product == product);
+            var cartDetail = _context.CartDetail.SingleOrDefault(x => x.Cart.User == user && x.Product == product && x.Size == size);
                 
             cartDetail.Quantity = quantity;
             
@@ -150,14 +152,14 @@ namespace NashSneaker.Controllers
             return Json(new { success = true, cartCounter = counter, totalAmount = totalAmount });
         }
 
-        public JsonResult DeleteItemFromCart(string userId, int productId)
+        public JsonResult DeleteItemFromCart(string userId, int productId, int size)
         {
             int counter = 0;
             int totalAmount = 0;
             var user = _context.Users.SingleOrDefault(x => x.Id == userId);
             var product = _context.Product.SingleOrDefault(x => x.Id == productId);
             var cart = _context.Cart.SingleOrDefault(x => x.User == user);
-            var cartDetail = _context.CartDetail.SingleOrDefault(x => x.Cart.User == user && x.Product == product);
+            var cartDetail = _context.CartDetail.SingleOrDefault(x => x.Cart.User == user && x.Product == product && x.Size == size);
 
             var cartDetailList = _context.CartDetail.Where(x => x.Cart.User == user).ToList();
 

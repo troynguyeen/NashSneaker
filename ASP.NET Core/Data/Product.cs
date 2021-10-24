@@ -17,5 +17,6 @@ namespace NashSneaker.Data
         public virtual List<Image> Images { get; set; }
         public virtual List<Rating> Ratings { get; set; }
         public virtual List<CartDetail> CartDetails { get; set; }
+        public virtual List<Size> Sizes { get; set; }
     }
 }

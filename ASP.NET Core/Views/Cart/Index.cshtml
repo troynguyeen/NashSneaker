@@ -50,19 +50,22 @@
                                     <tbody>
                                         @foreach (var item in Model.CartDetails)
                                         {
-                                            <tr id="@item.Product.Id">
+                                            <tr class="@item.Product.Id" data-content="@item.Size">
                                                 <td>
-                                                    <div class="product-info">
+                                                    <div class="product-info" style="display: flex; align-items: center;">
                                                         <img width="100" src="@item.Product.Images.ElementAt(0).Path" alt="product" />
-                                                        <a href="@Url.Action("Detail", "Shopping", new { productName = item.Product.Name, id = item.Product.Id })">
-                                                            @item.Product.Name
-                                                        </a>
+                                                        <div>
+                                                            <a href="@Url.Action("Detail", "Shopping", new { productName = item.Product.Name, id = item.Product.Id })">
+                                                                @item.Product.Name
+                                                            </a>
+                                                            <div style="margin-left: 10px;">Size: @item.Size</div>
+                                                        </div>
                                                     </div>
                                                 </td>
                                                 <td>@item.Product.Price VND</td>
-                                                <td><input type="number" value="@item.Quantity" min="1" max="10" style="width: 50px;" name="quantity" itemid="@item.Product.Id"></td>
+                                                <td><input id="@item.Size" type="number" value="@item.Quantity" min="1" max="10" style="width: 50px;" name="quantity" itemid="@item.Product.Id" data-content="@item.Size"></td>
                                                 <td>
-                                                    <a href="#!" class="product-remove" style="margin-left: 20px;" onclick="RemoveItem(this)" itemid="@item.Product.Id"><i class="fas fa-trash"></i></a>
+                                                    <a href="#!" class="product-remove" style="margin-left: 20px;" onclick="RemoveItem(this)" itemid="@item.Product.Id" data-content="@item.Size"><i class="fas fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                         }
@@ -107,13 +110,15 @@
 
         var userId = $("li[name=userAccount]").attr("data-content");
         var productId = $(item).attr("itemid");
+        var size = $(item).attr("data-content");
 
         $.ajax({
             async: true,
             type: 'DELETE',
             data: {
                 userId: userId,
-                productId: productId
+                productId: productId,
+                size: size
             },
             dataType: "text",
             url: '/Cart/DeleteItemFromCart',
@@ -122,7 +127,7 @@
 
                 $("#cartCount").text(obj.cartCounter);
                 $("span[name=total]").text(obj.totalAmount + " VND");
-                $("#" + productId).remove();
+                $("." + productId + "[data-content=" + size + "]").remove();
 
                 if (parseInt(obj.cartCounter) === 0) {
                     $("#hasItem").replaceWith($(hasNoItem));
@@ -136,21 +141,23 @@
 
     }
 
+    
     $(document).ready(function () {
         $("input[name=quantity]").change(function () {
             var userId = $("li[name=userAccount]").attr("data-content");
             var productId = $(this).attr("itemid");
             var quantity = this.value;
+            var size = $(this).attr("data-content");
 
             if (quantity < 1) {
                 quantity = 1;
                 alert("Số lượng mua phải ít nhất là 1!");
-                $("input[itemid=" + productId + "]").val(quantity);
+                $("#" + size + "[itemid=" + productId + "]").val(quantity);
             }
             else if (quantity > 10) {
                 quantity = 10;
                 alert("Số lượng mua không được lớn hơn 10!");
-                $("input[itemid=" + productId + "]").val(quantity);
+                $("#" + size + "[itemid=" + productId + "]").val(quantity);
             }
 
             $.ajax({
@@ -159,7 +166,8 @@
                 data: {
                     userId: userId,
                     productId: productId,
-                    quantity: quantity
+                    quantity: quantity,
+                    size: size
                 },
                 dataType: "text",
                 url: '/Cart/UpdateItemInCart',
@@ -174,8 +182,6 @@
                     console.log("error")
                 }
             })
-
         })
-
     })
 </script>
