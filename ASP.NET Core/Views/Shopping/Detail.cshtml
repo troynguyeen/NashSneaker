@@ -276,6 +276,10 @@
                 success: function (data) {
                     const obj = JSON.parse(data);
                     $("#cartCount").text(obj.cartCounter);
+
+                    if (obj.message != "") {
+                        alert(obj.message);
+                    }
                 },
                 error: function () {
                     console.log("error")

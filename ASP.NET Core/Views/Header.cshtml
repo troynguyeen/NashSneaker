@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using NashSneaker.Data
+@using Microsoft.AspNetCore.Http
 
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
@@ -74,7 +76,7 @@
                             <li class="dropdown cart-nav dropdown-slide">
                                 <a href="@Url.Action("Index", "Cart", new { userId = @UserManager.GetUserId(User) })">
                                     <i class="tf-ion-android-cart"></i>
-                                    <span class='badge badge-warning' id="cartCount">0</span>
+                                    <span class='badge badge-warning' id="cartCount">@HttpContextAccessor.HttpContext.Session.GetInt32("CartCounter")</span>
                                     <span class="cartText">Cart</span>
                                 </a>
                             </li><!-- / Cart -->
