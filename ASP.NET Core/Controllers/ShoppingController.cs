@@ -62,10 +62,12 @@ namespace NashSneaker.Controllers
                 var product = _context.Product.Where(product => product.Id == id && product.Name == productName).SingleOrDefault();
                 var imageList = _context.Image;
                 var ratingList = _context.Rating;
+                var sizeList = _context.Size;
                 var category = _context.Category.ToList();
-
+                
                 product.Ratings = ratingList.Where(rating => rating.Product.Id == product.Id).ToList();
                 product.Images = imageList.Where(image => image.Product.Id == product.Id).ToList();
+                product.Sizes = sizeList.Where(size => size.Product.Id == product.Id).ToList();
                 product.Category = category.Where(category => category.Id == product.Category.Id).SingleOrDefault();
 
                 return View(product);
