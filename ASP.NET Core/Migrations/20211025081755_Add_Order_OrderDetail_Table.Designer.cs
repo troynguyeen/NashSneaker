@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NashSneaker.Data;
 
 namespace NashSneaker.Migrations
 {
     [DbContext(typeof(NashSneakerContext))]
-    partial class NashSneakerContextModelSnapshot : ModelSnapshot
+    [Migration("20211025081755_Add_Order_OrderDetail_Table")]
+    partial class Add_Order_OrderDetail_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -268,21 +270,13 @@ namespace NashSneaker.Migrations
                     b.Property<string>("RecipientName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ShippingFee")
-                        .HasColumnType("int");
-
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TotalAmount")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
@@ -545,15 +539,6 @@ namespace NashSneaker.Migrations
                         .HasForeignKey("ProductId");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("NashSneaker.Data.Order", b =>
-                {
-                    b.HasOne("NashSneaker.Data.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NashSneaker.Data.OrderDetail", b =>

@@ -18,13 +18,6 @@ namespace NashSneaker.Areas.Identity
                 services.AddDbContext<NashSneakerContext>(options =>
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("NashSneakerContextConnection")));
-
-                services.AddDefaultIdentity<User>(options =>
-                {
-                    options.SignIn.RequireConfirmedAccount = false;
-                    options.Password.RequireNonAlphanumeric = false;
-                })
-                    .AddEntityFrameworkStores<NashSneakerContext>();
             });
         }
     }

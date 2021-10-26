@@ -16,6 +16,8 @@ namespace NashSneaker.Data
         {
         }
 
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
         public DbSet<Size> Size { get; set; }
         public DbSet<Cart> Cart { get; set; }
         public DbSet<CartDetail> CartDetail { get; set; }
