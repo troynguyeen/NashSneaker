@@ -1,0 +1,260 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using NashSneaker.Data
+
+@inject UserManager<User> UserManager
+@model NashSneaker.Data.Cart
+
+@{ 
+    var total = Model.TotalAmount + 15000;
+}
+
+<style>
+
+    .product-list::-webkit-scrollbar {
+        display: none; /* for Chrome, Safari, and Opera */
+    }
+
+</style>
+
+<div id="checkoutPage">
+    <section class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="content">
+                        <h1 class="page-name">Checkout</h1>
+                        <ol class="breadcrumb">
+                            <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+                            <li><a href="@Url.Action("Index", "Cart", new { userId = @UserManager.GetUserId(User) })">Cart</a></li>
+                            <li class="active">Checkout</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="page-wrapper">
+        <div class="checkout shopping">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="block billing-details">
+                            <h4 class="widget-title">Billing Details</h4>
+                            <form class="checkout-form">
+                                <div class="form-group">
+                                    <label for="RecipientName">Recipient Name</label>
+                                    <input type="text" class="form-control" id="RecipientName" placeholder="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="PhoneNumber">Phone Number</label>
+                                    <input type="text" class="form-control" id="PhoneNumber" placeholder="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Address">Address</label>
+                                    <input type="text" class="form-control" id="Address" placeholder="">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="block">
+                            <h4 class="widget-title">Payment Method</h4>
+                            <div class="payments_list">
+                                <div class="payments_selecting">
+                                    <ul id="paymentChoice">
+                                        <li id="cashPayment" style="padding-bottom: 10px;">
+                                            <div class="custom-radio form-check">
+                                                <input class="custom-radioInput form-check-input" style="margin: 5px;" type="radio" name="paymentSelecting" id="cash" value="cash" checked>
+                                                <label class="custom-radioLabel form-check-label" for="cash">
+                                                    <div class="item_payment">
+                                                        <img class="icons_payment" src="~/icon/cash_payment.svg" alt="cash" width="32">
+                                                        <span>Cash on delivery (COD)</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li id="cardPayment" style="padding-bottom: 10px;">
+                                            <div class="custom-radio form-check">
+                                                <input class="custom-radioInput form-check-input" style="margin: 5px;" type="radio" name="paymentSelecting" id="card" value="card">
+                                                <label class="custom-radioLabel form-check-label" for="card">
+                                                    <div class="item_payment">
+                                                        <img class="icons_payment" src="~/icon/debit-card.svg" alt="debit" width="32">
+                                                        <span>Napas ATM/Internet Banking</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li id="momoPayment" style="padding-bottom: 10px;">
+                                            <div class="custom-radio form-check">
+                                                <input class="custom-radioInput form-check-input" style="margin: 5px;" type="radio" name="paymentSelecting" id="momo" value="momo">
+                                                <label class="custom-radioLabel form-check-label" for="momo">
+                                                    <div class="item_payment">
+                                                        <img class="icons_payment" src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-mo-mo.svg" alt="cash" width="32">
+                                                        <span>MoMo Wallet</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <a onclick="PlaceOrder()" class="btn btn-main mt-20">Place Order</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="product-checkout-details">
+                            <div class="block">
+                                <h4 class="widget-title">Order Summary</h4>
+                                <div class="product-list" style="overflow-y: auto; height: 200px;">
+                                    @foreach (var item in Model.CartDetails)
+                                    {
+                                        <div class="media product-card">
+                                            <a class="pull-left">
+                                                <img class="media-object" src="@item.Product.Images.ElementAt(0).Path" alt="Image" />
+                                            </a>
+                                            <div class="media-body">
+                                                <h4 class="media-heading"><a>@item.Product.Name</a></h4>
+                                                <p class="price">@item.Quantity x @item.Product.Price</p>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <hr />
+                                <ul class="summary-prices">
+                                    <li>
+                                        <span>Subtotal:</span>
+                                        <span class="price">@Model.TotalAmount VND</span>
+                                    </li>
+                                    <li>
+                                        <span>Shipping:</span>
+                                        <span><span id="ShippingFee">15000</span> VND</span>
+                                    </li>
+                                </ul>
+                                <div class="summary-total">
+                                    <span>Total</span>
+                                    <span><span id="TotalAmount">@total</span> VND</span>
+                                </div>
+                                <div class="verified-icon">
+                                    <img src="images/verified.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function PlaceOrder() {
+        var RecipientName = $("#RecipientName").val();
+        var PhoneNumber = $("#PhoneNumber").val();
+        var Address = $("#Address").val();
+
+        var userId = $("li[name=userAccount]").attr("data-content");
+        var totalAmount = parseInt($("#TotalAmount").text());
+        var shippingFee = parseInt($("#ShippingFee").text());
+        var status = "Wait for confirmation";
+        var PaymentMethod = "";
+
+        var payment = $('input[name=paymentSelecting]:checked', '#paymentChoice').val();
+        if (payment == "momo") {
+            PaymentMethod = "MoMo Wallet";
+
+        } else if (payment == "card") {
+            PaymentMethod = "Napas ATM/Internet Banking";
+
+        } else {
+            PaymentMethod = "Cash on delivery (COD)";
+        }
+
+
+        if (RecipientName === "" || PhoneNumber === "" || Address === "") {
+            alert("Vui lòng nhập đầy đủ thông tin giao hàng!");
+        }
+        else {
+            
+            $.ajax({
+                async: true,
+                type: 'POST',
+                data: {
+                    userId: userId,
+                    RecipientName: RecipientName,
+                    PhoneNumber: PhoneNumber,
+                    Address: Address,
+                    totalAmount: totalAmount,
+                    shippingFee: shippingFee,
+                    status: status,
+                    PaymentMethod: PaymentMethod
+                },
+                dataType: "text",
+                url: '/Ordering/PlaceOrder',
+                success: function (data) {
+                    const obj = JSON.parse(data);
+
+                    if (obj.success == true) {
+                        $("#cartCount").text(0);
+                        Announcement();
+                    }
+                },
+                error: function () {
+                    console.log("error")
+                }
+            })
+        }
+    }
+
+    function Announcement() {
+
+        var MessagePayment = `
+        <section class="page-wrapper success-msg">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6 col-md-offset-3">
+                <div class="block text-center">
+        	        <i class="tf-ion-android-checkmark-circle"></i>
+                  <h2 class="text-center">Thank you! For your payment</h2>
+                  <p>The seller will contact you in a few minutes.</p>
+                  <a href="@Url.Action("Index", "Shopping", new { categoryName = "All Shoes" })" class="btn btn-main mt-20">Continue Shopping</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>`;
+
+        $("#checkoutPage").replaceWith($(MessagePayment));
+    }
+
+    $('#paymentChoice input').on('change', function () {
+
+        console.log("aloo")
+
+        var card = `
+        <div id="cardPayment_info" style="margin-left: 67px; padding-bottom: 20px;">
+            <div style="font-size: 15px; font-weight: bold;">Techcombank</div>
+            <div><b>Owner:</b> NGUYEN CHI THANH</div>
+            <div><b>Account Number:</b> 1900123456789</div>
+            <div><b>Content:</b> Username + Full Name + Phone Number</div>
+        </div>`;
+
+        var momo = `
+        <div id="momoPayment_info" style="margin-left: 67px; padding-bottom: 20px;">
+            <div style="font-size: 15px; font-weight: bold;">MoMo Wallet</div>
+            <div><b>Owner:</b> NGUYEN CHI THANH</div>
+            <div><b>Phone Number:</b> 0123456789</div>
+            <div><b>Content:</b> Username + Full Name + Phone Number</div>
+        </div>`;
+
+        var payment = $('input[name=paymentSelecting]:checked', '#paymentChoice').val();
+
+        $("#cardPayment_info").remove();
+        $("#momoPayment_info").remove();
+
+        if (payment == "card") {
+            $("#cardPayment").append($(card));
+
+        } else if (payment == "momo") {
+            $("#momoPayment").append($(momo));
+        }
+    });
+</script>

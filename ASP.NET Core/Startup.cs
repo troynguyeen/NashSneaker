@@ -27,7 +27,21 @@ namespace NashSneaker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<NashSneakerContext>(options =>
-                   options.UseSqlServer(Configuration.GetConnectionString("NashSneakerContextConnection")));
+                  options.UseSqlServer(Configuration.GetConnectionString("NashSneakerContextConnection")));
+
+            services.AddDefaultIdentity<User>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireNonAlphanumeric = false;
+            })
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<NashSneakerContext>();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminAccess", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("UserAccess", policy => policy.RequireAssertion(context => context.User.IsInRole("Admin") || context.User.IsInRole("User")));
+            });
 
             services.AddDistributedMemoryCache();
 

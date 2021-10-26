@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NashSneaker.Data;
 
 namespace NashSneaker.Migrations
 {
     [DbContext(typeof(NashSneakerContext))]
-    partial class NashSneakerContextModelSnapshot : ModelSnapshot
+    [Migration("20211025091515_Edit_Order_Table")]
+    partial class Edit_Order_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -267,9 +269,6 @@ namespace NashSneaker.Migrations
 
                     b.Property<string>("RecipientName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ShippingFee")
-                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");

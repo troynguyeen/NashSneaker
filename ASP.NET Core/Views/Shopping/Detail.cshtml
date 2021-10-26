@@ -1,12 +1,16 @@
-﻿@model NashSneaker.Data.Product
+﻿@using Microsoft.AspNetCore.Identity
+@using NashSneaker.Data
+
+@inject UserManager<User> UserManager
+@model NashSneaker.Data.Product
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Header.cshtml";
 
     float ratingProduct = 0;
-    
-    foreach(var item in Model.Ratings)
+
+    foreach (var item in Model.Ratings)
     {
         ratingProduct += item.Level;
     }
@@ -22,7 +26,8 @@
                     <h1 class="page-name">Shop</h1>
                     <ol class="breadcrumb">
                         <li><a href="@Url.Action("Index", "Home")">Home</a></li>
-                        <li>@Model.Category.Name</li>
+                        <li><a href="@Url.Action("Index", "Shopping", new { categoryName = "All Shoes" })">All Shoes</a></li>
+                        <li><a href="@Url.Action("Index", "Shopping", new { categoryName = Model.Category.Name })">@Model.Category.Name</a></li>
                         <li class="active">@Model.Name</li>
                     </ol>
                 </div>
@@ -316,7 +321,7 @@
         for (var j = 0; j < level; j++) {
             $(listStart[j]).addClass('selected');
         }
-        
+
         /* 1. Visualizing things on Hover - See next part for action on click */
         $('#stars li').on('mouseover', function () {
             var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
