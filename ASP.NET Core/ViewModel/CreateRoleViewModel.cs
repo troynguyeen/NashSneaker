@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NashSneaker.Data
+namespace NashSneaker.ViewModel
 {
-    public class Role
+    public class CreateRoleViewModel
     {
         public int Id { get; set; }
         public string RoleName { get; set; }

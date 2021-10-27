@@ -11,20 +11,22 @@ using System.Threading.Tasks;
 
 namespace NashSneaker.Controllers
 {
-    
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly NashSneakerContext _context;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, NashSneakerContext context)
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, SignInManager<User> signInManager, NashSneakerContext context)
         {
-            this._userManager = userManager;
-            this._roleManager = roleManager;
-            this._context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _roleManager = roleManager;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -33,36 +35,63 @@ namespace NashSneaker.Controllers
         }
 
         [HttpPost("CreateRole")]
-        public async Task<IActionResult> CreateRole(Role role)
+        public async Task<IActionResult> CreateRole(CreateRoleViewModel vm)
         {
-            var roleExist = await _roleManager.RoleExistsAsync(role.RoleName);
+            var roleExist = await _roleManager.RoleExistsAsync(vm.RoleName);
             if(!roleExist)
             {
-                var result = await _roleManager.CreateAsync(new IdentityRole(role.RoleName));
+                await _roleManager.CreateAsync(new IdentityRole(vm.RoleName));
 
-                return Ok(result);
+                return Ok(new { message = "Create user role succeeded." });
             }
             else
             {
-                return BadRequest("The role name had exist!");
+                return BadRequest(new { message = "The role name had exist." });
             }
         }
 
         [HttpPost("UpdateUserRole")]
-        public async Task<IActionResult> UpdateUserRole(UpdateUserRoleViewModel userViewModel)
+        public async Task<IActionResult> UpdateUserRole(UpdateUserRoleViewModel vm)
         {
-            var user = await _userManager.FindByEmailAsync(userViewModel.UserEmail);
+            var user = await _userManager.FindByEmailAsync(vm.UserEmail);
 
-            if (userViewModel.Delete)
+            if (vm.Delete)
             {
-                await _userManager.RemoveFromRoleAsync(user, userViewModel.Role);
+                await _userManager.RemoveFromRoleAsync(user, vm.Role);
             }
             else
             {
-                await _userManager.AddToRoleAsync(user, userViewModel.Role);
+                await _userManager.AddToRoleAsync(user, vm.Role);
             }
 
-            return Ok(userViewModel);
+            return Ok(vm);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginUserViewModel vm)
+        {
+            var user = _context.Users.SingleOrDefault(x => x.Email == vm.Email);
+            var userRole = _context.UserRoles.SingleOrDefault(x => x.UserId == user.Id);
+            var role = _context.Roles.SingleOrDefault(x => x.Id == userRole.RoleId);
+
+            var result = await _signInManager.PasswordSignInAsync(vm.Email, vm.Password, vm.RememberMe, lockoutOnFailure: false);
+
+            if (result.Succeeded && role.Name == "Admin")
+            {
+                return Ok(new { message = "Welcome Admin!" });
+            }
+            else
+            {
+                return BadRequest(new { message = "Incorrect Account." });
+            }
+        }
+
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok(new { message = "Logout succeeded." });
         }
     }
 }
