@@ -102,5 +102,30 @@ namespace NashSneaker.Controllers
 
             _context.SaveChanges();
         }
+
+        public IActionResult Search(string keyword)
+        {
+            var productList = _context.Product.Where(x => x.Name.Contains(keyword) || keyword == null).ToList();
+            var imageList = _context.Image;
+
+            if(productList.Count() == 0)
+            {
+                productList = new List<Product>();
+                productList.Add(new Product());
+                productList.ElementAt(0).Category = new Category() { Name = "results for \"" + keyword + "\"" };
+
+                return View(productList);
+            }
+            else
+            {
+                foreach (var item in productList)
+                {
+                    item.Images = imageList.Where(image => image.Product.Id == item.Id).ToList();
+                    item.Category = new Category() { Name = "results for \"" + keyword + "\"" };
+                }
+
+                return View(productList);
+            } 
+        }
     }
 }

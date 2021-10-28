@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NashSneaker.Data;
+using NashSneaker.Helpers;
 using NashSneaker.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace NashSneaker.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
@@ -20,13 +21,20 @@ namespace NashSneaker.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly NashSneakerContext _context;
+        private readonly JwtService _jwtService;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, SignInManager<User> signInManager, NashSneakerContext context)
+        public AdminController(
+            RoleManager<IdentityRole> roleManager, 
+            UserManager<User> userManager, 
+            SignInManager<User> signInManager, 
+            NashSneakerContext context,
+            JwtService jwtService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _context = context;
+            _jwtService = jwtService;
         }
 
         public IActionResult Index()
@@ -71,17 +79,25 @@ namespace NashSneaker.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginUserViewModel vm)
         {
-            var user = _context.Users.SingleOrDefault(x => x.Email == vm.Email);
-            var userRole = _context.UserRoles.SingleOrDefault(x => x.UserId == user.Id);
-            var role = _context.Roles.SingleOrDefault(x => x.Id == userRole.RoleId);
-
-            var result = await _signInManager.PasswordSignInAsync(vm.Email, vm.Password, vm.RememberMe, lockoutOnFailure: false);
-
-            if (result.Succeeded && role.Name == "Admin")
+            try
             {
-                return Ok(new { message = "Welcome Admin!" });
+                var user = _context.Users.SingleOrDefault(x => x.Email == vm.Email);
+                var userRole = _context.UserRoles.SingleOrDefault(x => x.UserId == user.Id);
+                var role = _context.Roles.SingleOrDefault(x => x.Id == userRole.RoleId);
+
+                var result = await _signInManager.PasswordSignInAsync(vm.Email, vm.Password, vm.RememberMe, lockoutOnFailure: false);
+
+                if (result.Succeeded && role.Name == "Admin")
+                {
+                    var jwt = _jwtService.GenerateJwt(user);
+                    return Ok(new { message = "Welcome Admin!", jwt });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Incorrect Account." });
+                }
             }
-            else
+            catch(Exception)
             {
                 return BadRequest(new { message = "Incorrect Account." });
             }
