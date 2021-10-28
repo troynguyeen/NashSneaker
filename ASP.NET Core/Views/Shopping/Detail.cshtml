@@ -26,7 +26,6 @@
                     <h1 class="page-name">Shop</h1>
                     <ol class="breadcrumb">
                         <li><a href="@Url.Action("Index", "Home")">Home</a></li>
-                        <li><a href="@Url.Action("Index", "Shopping", new { categoryName = "All Shoes" })">All Shoes</a></li>
                         <li><a href="@Url.Action("Index", "Shopping", new { categoryName = Model.Category.Name })">@Model.Category.Name</a></li>
                         <li class="active">@Model.Name</li>
                     </ol>

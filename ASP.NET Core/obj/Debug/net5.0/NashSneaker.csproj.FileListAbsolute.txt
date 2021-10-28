@@ -348,3 +348,5 @@ C:\NashSneaker\ASP.NET Core\obj\Debug\net5.0\Razor\Views\Cart\Index.cshtml.g.cs
 C:\NashSneaker\ASP.NET Core\obj\Debug\net5.0\Razor\Areas\Identity\Pages\Account\Logout.cshtml.g.cs
 C:\NashSneaker\ASP.NET Core\obj\Debug\net5.0\Razor\Views\Shared\_LoginPartial.cshtml.g.cs
 C:\NashSneaker\ASP.NET Core\obj\Debug\net5.0\Razor\Views\Ordering\Index.cshtml.g.cs
+C:\NashSneaker\ASP.NET Core\obj\Debug\net5.0\Razor\Views\Shopping\Search.cshtml.g.cs
+C:\NashSneaker\ASP.NET Core\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
