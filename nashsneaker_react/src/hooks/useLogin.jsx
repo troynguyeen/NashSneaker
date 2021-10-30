@@ -34,11 +34,9 @@ const useLogin = (initialFieldValues, props) => {
                     "Email": values.email,
                     "Password": values.password,
                     "RememberMe": false
-                 })
+                })
 
                 const user = response.data
-
-                console.log(response)
 
                 setIsLoading(true)
                 sessionStorage.setItem("jwt", user.jwt);

@@ -12,6 +12,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from './components/Sidebar';
 import MuiAppBar from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
+import Dashboard from './pages/Dashboard';
+import Categories from './pages/Categories';
+import Products from './pages/Products';
+import ViewUsers from './pages/ViewUsers';
+import CategoryForm from './pages/CategoryForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -159,7 +164,7 @@ function App() {
             </div>
               {
                 fullName == '' ?
-                <Link to="/Login">
+                <Link to="/login">
                   <Button color="inherit">Login</Button>
                 </Link>
                 :
@@ -197,10 +202,19 @@ function App() {
           handleDrawerClose={handleDrawerClose} 
           drawerWidth={drawerWidth}
         />
+        <Container>
+          <Switch>
+            <Route exact path="/login" component={() => fullName !== '' ? '' : <Login fullName={fullName} setFullName={setFullName}/>} />
+          </Switch>
+        </Container>
         <Main open={open}>
           <Container>
             <Switch>
-              <Route exact path="/Login" component={() => fullName !== '' ? '' : <Login fullName={fullName} setFullName={setFullName}/>} />
+              <Route exact path='/dashboard' component={() => <Dashboard />} />
+              <Route exact path='/categories' component={() => <Categories />} />
+              <Route exact path='/categories/add-new' component={() => <CategoryForm />} />
+              <Route exact path='/products' component={() => <Products />} />
+              <Route exact path='/view-users' component={() => <ViewUsers />} />
             </Switch>
           </Container>
         </Main>

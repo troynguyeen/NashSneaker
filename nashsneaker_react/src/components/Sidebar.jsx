@@ -12,6 +12,9 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { makeStyles } from '@material-ui/core/styles';
+import { MdSpaceDashboard, MdCategory } from "react-icons/md";
+import { GiConverseShoe } from "react-icons/gi";
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,25 +71,41 @@ const Sidebar = (props) => {
       </DrawerHeader>
       <Divider />
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
+        <Link to='/dashboard'>
+          <ListItem button>
             <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              <MdSpaceDashboard style={{ fontSize: '20px', color: '#fff' }} />
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText primary={"Dashboard"} />
           </ListItem>
-        ))}
+        </Link>
+        <Link to='/categories'>
+          <ListItem button>
+            <ListItemIcon>
+              <MdCategory style={{ fontSize: '20px', color: '#fff' }} />
+            </ListItemIcon>
+            <ListItemText primary={"Categories"} />
+          </ListItem>
+        </Link>
+        <Link to='/products'>
+          <ListItem button>
+            <ListItemIcon>
+              <GiConverseShoe style={{ fontSize: '20px', color: '#fff' }} />
+            </ListItemIcon>
+            <ListItemText primary={"Products"} />
+          </ListItem>
+        </Link>
       </List>
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
+        <Link to='/view-users'>
+          <ListItem button>
             <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              <InboxIcon />
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText primary={"View users"} />
           </ListItem>
-        ))}
+        </Link>
       </List>
     </Drawer>
   );

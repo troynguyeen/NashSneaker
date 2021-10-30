@@ -4,7 +4,7 @@ import { Button, CircularProgress, Grid, Modal, TextField, Tooltip } from '@mui/
 import { Box } from '@mui/system'
 import { makeStyles } from '@material-ui/core/styles';
 import InfoIcon from '@material-ui/icons/Info';
-import useLogin from '../components/useLogin';
+import useLogin from '../hooks/useLogin';
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -93,7 +93,7 @@ const Login = (props) => {
                     </Grid>
                 </Grid>
                 <div style={{ textAlign: 'end' }}>
-                    <Tooltip title="(username: admin, password: 123456)" placement="top-end">
+                    <Tooltip title="Login as admin" placement="top-end">
                         <InfoIcon />
                     </Tooltip>
                 </div>
