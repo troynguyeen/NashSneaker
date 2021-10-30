@@ -90,7 +90,7 @@ namespace NashSneaker.Controllers
                 if (result.Succeeded && role.Name == "Admin")
                 {
                     var jwt = _jwtService.GenerateJwt(user);
-                    return Ok(new { message = "Welcome Admin!", jwt });
+                    return Ok(new { message = "Welcome Admin!", fullName = user.FirstName + " " + user.LastName, jwt });
                 }
                 else
                 {
@@ -101,13 +101,6 @@ namespace NashSneaker.Controllers
             {
                 return BadRequest(new { message = "Incorrect Account." });
             }
-        }
-
-        [HttpPost("Logout")]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return Ok(new { message = "Logout succeeded." });
         }
     }
 }
