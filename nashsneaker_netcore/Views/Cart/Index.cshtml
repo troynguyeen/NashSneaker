@@ -1,0 +1,198 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using NashSneaker.Data
+
+@inject UserManager<User> UserManager
+@model NashSneaker.Data.Cart
+
+@{
+    Layout = "~/Views/Header.cshtml";
+}
+
+<style>
+
+    table {
+        border-collapse: separate;
+    }
+
+    th, td {
+        padding: 20px;
+        text-align: left;
+    }
+
+    .product-list::-webkit-scrollbar {
+        display: none; /* for Chrome, Safari, and Opera */
+    }
+</style>
+
+<section class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="content">
+                    <h1 class="page-name">Cart</h1>
+                    <ol class="breadcrumb">
+                        <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+                        <li class="active">Cart</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="page-wrapper" style="padding-top: 20px;">
+    <div class="cart shopping">
+        <div class="container">
+            @if (Model != null)
+            {
+                <div class="row" id="hasItem">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="block">
+                            <div class="product-list" style="overflow-y: auto; height: 540px;">
+                                <table class="table">
+                                    <thead style="position: sticky; top: 0; background-color: #FFF;">
+                                        <tr>
+                                            <th>Item Name</th>
+                                            <th>Unit Price</th>
+                                            <th>Quantity</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.CartDetails)
+                                        {
+                                            <tr class="@item.Product.Id" data-content="@item.Size">
+                                                <td>
+                                                    <div class="product-info" style="display: flex; align-items: center;">
+                                                        <img width="100" src="@item.Product.Images.ElementAt(0).Path" alt="product" />
+                                                        <div>
+                                                            <a href="@Url.Action("Detail", "Shopping", new { productName = item.Product.Name, id = item.Product.Id })">
+                                                                @item.Product.Name
+                                                            </a>
+                                                            <div style="margin-left: 10px; padding-top: 10px;">Size: @item.Size</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>@item.Product.Price VND</td>
+                                                <td><input id="@item.Size" type="number" value="@item.Quantity" min="1" max="10" style="width: 50px;" name="quantity" itemid="@item.Product.Id" data-content="@item.Size"></td>
+                                                <td>
+                                                    <a href="#!" class="product-remove" style="margin-left: 20px;" onclick="RemoveItem(this)" itemid="@item.Product.Id" data-content="@item.Size"><i class="fas fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <div style="display: flex; justify-content: space-between; padding: 30px 0; border-top: 1px solid black; position: sticky; bottom: 0; background-color: #FFF;">
+                                    <span style="font-weight: bold;">Total</span>
+                                    <span style="color: #000" name="total">@Model.TotalAmount VND</span>
+                                </div>
+                            </div>
+                            <a href="@Url.Action("Index", "Ordering", new { userId = @UserManager.GetUserId(User) })" class="btn btn-main pull-right">Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="cartInner" style="margin-top: -50px;">
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <img src="https://salt.tikicdn.com/desktop/img/mascot@2x.png">
+                        <h2 style="padding-top: 10px;">No Items Found!</h2>
+                        <div style="font-size: 20px; padding: 30px;">Sorry mate... no items found inside your cart</div>
+                        <a href="@Url.Action("Index", "Shopping", new { categoryName = "All Shoes" })" class="btn btn-main pull-right">Continue shopping</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function RemoveItem(item) {
+        var hasNoItem = `
+        <div class="cartInner" style="margin-top: -50px;">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <img src="https://salt.tikicdn.com/desktop/img/mascot@2x.png">
+                <h2 style="padding-top: 10px;">No Items Found!</h2>
+                <div style="font-size: 20px; padding: 30px;">Sorry mate... no items found inside your cart</div>
+                <a href="@Url.Action("Index", "Shopping", new { categoryName = "All Shoes" })" class="btn btn-main pull-right">Continue shopping</a>
+            </div>
+        </div>`;
+
+        var userId = $("li[name=userAccount]").attr("data-content");
+        var productId = $(item).attr("itemid");
+        var size = $(item).attr("data-content");
+
+        $.ajax({
+            async: true,
+            type: 'DELETE',
+            data: {
+                userId: userId,
+                productId: productId,
+                size: size
+            },
+            dataType: "text",
+            url: '/Cart/DeleteItemFromCart',
+            success: function (data) {
+                const obj = JSON.parse(data);
+
+                $("#cartCount").text(obj.cartCounter);
+                $("span[name=total]").text(obj.totalAmount + " VND");
+                $("." + productId + "[data-content=" + size + "]").remove();
+
+                if (parseInt(obj.cartCounter) === 0) {
+                    $("#hasItem").replaceWith($(hasNoItem));
+                }
+
+            },
+            error: function () {
+                console.log("error")
+            }
+        })
+
+    }
+
+
+    $(document).ready(function () {
+        $("input[name=quantity]").change(function () {
+            var userId = $("li[name=userAccount]").attr("data-content");
+            var productId = $(this).attr("itemid");
+            var quantity = this.value;
+            var size = $(this).attr("data-content");
+
+            if (quantity < 1) {
+                quantity = 1;
+                alert("Số lượng mua phải ít nhất là 1!");
+                $("#" + size + "[itemid=" + productId + "]").val(quantity);
+            }
+            else if (quantity > 10) {
+                quantity = 10;
+                alert("Số lượng mua không được lớn hơn 10!");
+                $("#" + size + "[itemid=" + productId + "]").val(quantity);
+            }
+
+            $.ajax({
+                async: true,
+                type: 'PUT',
+                data: {
+                    userId: userId,
+                    productId: productId,
+                    quantity: quantity,
+                    size: size
+                },
+                dataType: "text",
+                url: '/Cart/UpdateItemInCart',
+                success: function (data) {
+                    const obj = JSON.parse(data);
+
+                    $("#cartCount").text(obj.cartCounter);
+                    $("span[name=total]").text(obj.totalAmount + " VND");
+
+                },
+                error: function () {
+                    console.log("error")
+                }
+            })
+        })
+    })
+</script>

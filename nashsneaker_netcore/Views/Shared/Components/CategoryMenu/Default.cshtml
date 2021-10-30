@@ -1,0 +1,10 @@
+﻿@model IEnumerable<NashSneaker.Data.Category>
+<ul>
+    <li class="dropdown-header">Category</li>
+    <li role="separator" class="divider"></li>
+    <li><a href="@Url.Action("Index", "Shopping", new { categoryName = "All Shoes" })">All Shoes</a></li>
+    @foreach (var item in Model)
+    {
+        <li><a href="@Url.Action("Index", "Shopping", new { categoryName = item.Name })">@item.Name</a></li>
+    }
+</ul>
