@@ -102,5 +102,101 @@ namespace NashSneaker.Controllers
                 return BadRequest(new { message = "Incorrect Account." });
             }
         }
+
+        [HttpGet("Categories")]
+        public IActionResult Categories()
+        {
+            var categories = _context.Category.ToList();
+            return Ok(categories);
+        }
+
+        [HttpGet("GetCategoryById/{id}")]
+        public IActionResult GetCategoryById(int id)
+        {
+            if(_context.Category.Any(x => x.Id == id))
+            {
+                var category = _context.Category.SingleOrDefault(x => x.Id == id);
+                return Ok(category);
+            }
+            else
+            {
+                return BadRequest();
+            }
+            
+        }
+
+        [HttpPost("AddNewCategory")]
+        public IActionResult AddNewCategory(Category category)
+        {
+            if(!_context.Category.Any(x => x.Name == category.Name))
+            {
+                _context.Add(category);
+                _context.SaveChanges();
+
+                return Ok(new { message = "Add new category successfully." });
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut("EditCategory")]
+        public IActionResult EditCategory(Category category)
+        {
+            if (_context.Category.Any(x => x.Id == category.Id))
+            {
+                var currentCategory = _context.Category.SingleOrDefault(x => x.Id == category.Id);
+
+                if(_context.Category.Any(x => x.Name == category.Name && category.Name != currentCategory.Name))
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    var _category = _context.Category.SingleOrDefault(x => x.Id == category.Id);
+                    _category.Name = category.Name;
+                    _category.Description = category.Description;
+                    _context.SaveChanges();
+
+                    return Ok(new { message = "Edit category successfully." });
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("DeleteCategory/{id}")]
+        public IActionResult DeleteCategory(int id)
+        {
+            if (_context.Category.Any(x => x.Id == id))
+            {
+                var category = _context.Category.SingleOrDefault(x => x.Id == id);
+                _context.Remove(category);
+                _context.SaveChanges();
+
+                return Ok(new { message = "Delete category successfully." });
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("Products")]
+        public IActionResult Products()
+        {
+            var products = _context.Product.ToList();
+            return Ok(products);
+        }
+
+        [HttpGet("Users")]
+        public IActionResult Users()
+        {
+            var users = _context.Users.ToList();
+            return Ok(users);
+        }
     }
 }
