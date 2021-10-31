@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import Login from './pages/Login';
-import { BrowserRouter, Link, Switch, Route, useHistory } from 'react-router-dom';
+import { BrowserRouter, Link, Switch, Route, useHistory, Redirect } from 'react-router-dom';
 import { Box, CircularProgress, Container, Menu, MenuItem, Modal, AppBar, Toolbar, Typography, Button, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -48,9 +48,11 @@ function App() {
 
   const classes = useStyles();
 
+  const history = useHistory();
+
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
-  const [fullName, setFullName] = useState(sessionStorage.getItem("fullName") ? sessionStorage.getItem("fullName") : '');
+  const [fullName, setFullName] = useState(localStorage.getItem("fullName") ? localStorage.getItem("fullName") : '');
 
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
@@ -94,7 +96,9 @@ function App() {
   );
 
   const handleDrawerOpen = () => {
-    setOpen(true);
+    if(fullName != '') {
+      setOpen(true);
+    }
   };
 
   const handleDrawerClose = () => {
@@ -112,14 +116,20 @@ function App() {
   const handleLogout = () => {
     setIsLoading(true)
     setAnchorEl(null);
-
     setTimeout(() => {
       setIsLoading(false)
       setFullName('')
-      sessionStorage.removeItem("fullName");
-      sessionStorage.removeItem("jwt");
+      localStorage.removeItem("fullName");
+      localStorage.removeItem("jwt");
     }, 2000);
   }
+
+  useEffect(() => {
+    if(fullName == '') {
+      setOpen(false)
+    }
+    
+  },[fullName])
 
   return (
     <BrowserRouter>
@@ -202,19 +212,19 @@ function App() {
           handleDrawerClose={handleDrawerClose} 
           drawerWidth={drawerWidth}
         />
-        <Container>
-          <Switch>
-            <Route exact path="/login" component={() => fullName !== '' ? '' : <Login fullName={fullName} setFullName={setFullName}/>} />
-          </Switch>
-        </Container>
-        <Main open={open}>
+        <Main open={open} style={{paddingLeft: '250px'}}>
           <Container>
             <Switch>
+              <Route exact path="/login" component={() => fullName == '' ? <Login fullName={fullName} setFullName={setFullName}/> : <Redirect to="/dashboard"/>} />
+              {fullName == '' ? <Route render={() => <Redirect to="/login"/>}/> : ''}
+              <Route exact path='/' component={() => <Redirect to="/dashboard"/>} />
               <Route exact path='/dashboard' component={() => <Dashboard />} />
               <Route exact path='/categories' component={() => <Categories />} />
               <Route exact path='/categories/add-new' component={() => <CategoryForm />} />
+              <Route exact path='/categories/edit/:id' component={() => <CategoryForm />} />
               <Route exact path='/products' component={() => <Products />} />
               <Route exact path='/view-users' component={() => <ViewUsers />} />
+              <Route path='*' component={() => <div>404 Not Found!</div>}/>
             </Switch>
           </Container>
         </Main>

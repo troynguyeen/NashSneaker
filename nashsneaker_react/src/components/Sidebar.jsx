@@ -10,7 +10,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { makeStyles } from '@material-ui/core/styles';
 import { MdSpaceDashboard, MdCategory } from "react-icons/md";
 import { GiConverseShoe } from "react-icons/gi";

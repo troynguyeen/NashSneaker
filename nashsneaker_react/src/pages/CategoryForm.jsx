@@ -1,8 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import { Button, Container, Grid, Paper, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import useApi from '../hooks/useApi';
+import { toast, ToastContainer } from 'react-toastify';
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import { useHistory, useParams, useLocation } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -49,24 +52,50 @@ const initialValue = {
 const CategoryForm = () => {
 
     const classes = useStyles();
+
+    const history = useHistory();
+    const location = useLocation();
+    const param = useParams();
+
+    const [title, setTitle] = useState('Add new category')
     
-    const {values, setValues, message, setMessage, PostAPI, PutAPI, handleInputChange} = useApi(initialValue);
+    const {values, setValues, message, setMessage, FetchAPI, GetByIdAPI, PostAPI, PutAPI, handleInputChange} = useApi(initialValue);
 
     useEffect(() => {
-        if(message === 'error') {
-            console.log('looiiiiii')
-        }
-        else {
-            console.log('message', message)
+        if(message !== '') {
+            if(message === 'error') {
+                toast.error("Something went wrong!", {
+                    theme: "colored"
+                });
+            }
+            else {
+                toast.success(message, {
+                    theme: "colored"
+                });
+            }
         }
 
     }, [message])
 
+    useEffect(() => {
+        if(location.pathname.includes("edit")) {
+            param.id > 0 ? GetByIdAPI('GetCategoryById', param.id) : history.push('/categories')
+            setTitle('Edit category')
+        }
+
+    }, [])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setMessage('')
-        setValues(initialValue)
-        PostAPI('AddNewCategory');
+        if(values.name != '' && values.description != '') {
+            param.id > 0 ? PutAPI('EditCategory') : PostAPI('AddNewCategory');
+            setMessage('')
+        }
+        else {
+            toast.warning("All information can not be empty", {
+                theme: "colored"
+            });
+        }
     }
 
     const handleReset = () => {
@@ -75,8 +104,9 @@ const CategoryForm = () => {
 
     return (
         <Container className={classes.container}>
-            <h2 style={{ textAlign: 'center' }}>Add new category</h2>
+            <h2>{title}</h2>
             <Paper className={classes.paper} elevation={5}>
+                <AiOutlineArrowLeft onClick={() => history.push('/categories')} style={{ fontSize: '25px', cursor: 'pointer' }}/>
                 <form noValidate className={classes.root} onSubmit={handleSubmit}>
                     <Grid container>
                         <Grid item xs={12}>

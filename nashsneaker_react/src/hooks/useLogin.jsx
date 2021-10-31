@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router';
 import { toast } from 'react-toastify';
 
 const useLogin = (initialFieldValues, props) => {
@@ -8,8 +7,6 @@ const useLogin = (initialFieldValues, props) => {
     const [values, setValues] = useState(initialFieldValues)
     const [errors, setErrors] = useState('');
     const [isLoading, setIsLoading] = useState(false)
-
-    const location = useHistory();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
@@ -39,15 +36,13 @@ const useLogin = (initialFieldValues, props) => {
                 const user = response.data
 
                 setIsLoading(true)
-                sessionStorage.setItem("jwt", user.jwt);
-                sessionStorage.setItem("fullName", user.fullName);
+                localStorage.setItem("jwt", user.jwt);
+                localStorage.setItem("fullName", user.fullName);
 
                 setTimeout(() => {
                     setIsLoading(false)
                     props.setFullName(user.fullName)
-                    toast('🚀 Welcome ' + user.fullName + ' !')
-                    location.goBack()
-
+                    toast('🚀 Welcome ' + user.fullName + ' !');
                 }, 3000);
             }
             catch(e) {
