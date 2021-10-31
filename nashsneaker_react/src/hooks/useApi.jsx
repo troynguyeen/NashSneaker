@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 
 const useApi = (initialValue) => {
 
-    const location = useHistory();
+    const history = useHistory();
 
     const [list, setList] = useState([]);
     const [values, setValues] = useState(initialValue);
@@ -19,18 +19,35 @@ const useApi = (initialValue) => {
             ...fieldValue
         })
     }
-
+    
     //GET API
-    const fetchAPI = async (ApiName) => {
+    const FetchAPI = async (ApiName) => {
         try {
             const response = await axios.get(`https://localhost:44357/api/Admin/${ApiName}`, 
             {
                 headers: {
-                  'Authorization': `Bearer ${sessionStorage.getItem("jwt")}`
+                  'Authorization': `Bearer ${localStorage.getItem("jwt")}`
                 }
             })
 
             setList(response.data)
+        }
+        catch(e) {
+            console.log(e)
+        }
+    }
+
+    //GET API by Id
+    const GetByIdAPI = async (ApiName, id) => {
+        try {
+            const response = await axios.get(`https://localhost:44357/api/Admin/${ApiName}/${id}`, 
+            {
+                headers: {
+                  'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+                }
+            })
+
+            setValues({...response.data})
         }
         catch(e) {
             console.log(e)
@@ -43,12 +60,12 @@ const useApi = (initialValue) => {
             const response = await axios.post(`https://localhost:44357/api/Admin/${ApiName}`, values,
             {
                 headers: {
-                  'Authorization': `Bearer ${sessionStorage.getItem("jwt")}`
+                  'Authorization': `Bearer ${localStorage.getItem("jwt")}`
                 }
             })
 
             setMessage(response.data.message)
-            location.goBack()
+            history.goBack()
         }
         catch(e) {
             console.log(e)
@@ -59,14 +76,15 @@ const useApi = (initialValue) => {
     //PUT API
     const PutAPI = async (ApiName) => {
         try {
-            const response = await axios.get(`https://localhost:44357/api/Admin/${ApiName}`, values,
+            const response = await axios.put(`https://localhost:44357/api/Admin/${ApiName}`, values,
             {
                 headers: {
-                  'Authorization': `Bearer ${sessionStorage.getItem("jwt")}`
+                  'Authorization': `Bearer ${localStorage.getItem("jwt")}`
                 }
             })
 
             setMessage(response.data.message)
+            history.goBack()
         }
         catch(e) {
             console.log(e)
@@ -77,10 +95,10 @@ const useApi = (initialValue) => {
     //DELETE API
     const DeleteAPI = async (ApiName, id) => {
         try {
-            const response = await axios.get(`https://localhost:44357/api/Admin/${ApiName}/${id}`,
+            const response = await axios.delete(`https://localhost:44357/api/Admin/${ApiName}/${id}`,
             {
                 headers: {
-                  'Authorization': `Bearer ${sessionStorage.getItem("jwt")}`
+                  'Authorization': `Bearer ${localStorage.getItem("jwt")}`
                 }
             })
 
@@ -98,7 +116,8 @@ const useApi = (initialValue) => {
         setValues,
         message,
         setMessage,
-        fetchAPI,
+        FetchAPI,
+        GetByIdAPI,
         PostAPI,
         PutAPI,
         DeleteAPI,

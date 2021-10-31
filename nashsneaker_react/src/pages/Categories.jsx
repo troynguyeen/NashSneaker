@@ -44,9 +44,7 @@ const Categories = () => {
 
     const classes = useStyles();
 
-    const {list, fetchAPI} = useApi();
-
-    const [currentId, setCurrentId] = useState(0);
+    const {list, message, setMessage, FetchAPI, DeleteAPI} = useApi();
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('id');
@@ -55,13 +53,27 @@ const Categories = () => {
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, list.length - page * rowsPerPage);
 
-    const deleteSelectedId = (id) => {
-        const onDeleteSuccess = () => {
-            toast("Đã xóa số #" + id +" thành công.")
+    useEffect(() => {
+        if(message !== '') {
+            if(message === 'error') {
+                toast.error("Delete category failed", {
+                    theme: "colored"
+                });
+            }
+            else {
+                FetchAPI("Categories")
+                toast.success(message, {
+                    theme: "colored"
+                });
+            }
         }
-        if(window.confirm("Bạn có chắc chắn muốn xóa ?")) {
-            //deleteDGuest(id, onDeleteSuccess)
-            setCurrentId(0)
+
+    }, [message])
+
+    const deleteSelectedId = (id) => {
+        if(window.confirm("Are you sure to remove category #" + id +" ?")) {
+            DeleteAPI('DeleteCategory', id)
+            setMessage('')
             setPage(rowsPerPage - emptyRows == 1 ? 0 : page)
         }
     }
@@ -152,7 +164,7 @@ const Categories = () => {
 
     useEffect(() => {
         //Fetch API at the first rendering 
-        fetchAPI("Categories")
+        FetchAPI("Categories")
 
     }, [])
 
@@ -194,7 +206,9 @@ const Categories = () => {
                                             <TableCell align="left">{record.description}</TableCell>
                                             <TableCell align="center">
                                                 <ButtonGroup variant="text">
-                                                    <Button onClick={() => setCurrentId(record.id)}><EditIcon color="primary"/></Button>
+                                                    <Link to={`/categories/edit/${record.id}`}>
+                                                        <Button><EditIcon color="primary"/></Button>
+                                                    </Link>
                                                     <Button onClick={() => deleteSelectedId(record.id)}><DeleteIcon color="secondary" /></Button>
                                                 </ButtonGroup>
                                             </TableCell>
