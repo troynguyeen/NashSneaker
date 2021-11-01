@@ -529,3 +529,6 @@ C:\NashSneaker\nashsneaker_netcore\obj\Debug\net5.0\NashSneaker.dll
 C:\NashSneaker\nashsneaker_netcore\obj\Debug\net5.0\ref\NashSneaker.dll
 C:\NashSneaker\nashsneaker_netcore\obj\Debug\net5.0\NashSneaker.pdb
 C:\NashSneaker\nashsneaker_netcore\obj\Debug\net5.0\NashSneaker.genruntimeconfig.cache
+C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
