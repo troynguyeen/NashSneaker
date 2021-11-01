@@ -189,7 +189,42 @@ namespace NashSneaker.Controllers
         public IActionResult Products()
         {
             var products = _context.Product.ToList();
+            var categories = _context.Category.ToList();
+            var images = _context.Image.ToList();
+
+            foreach(var item in categories)
+            {
+                item.Products = new List<Product>();
+            }
+
             return Ok(products);
+        }
+
+        [HttpDelete("DeleteProduct/{id}")]
+        public IActionResult DeleteProduct(int id)
+        {
+            if (_context.Product.Any(x => x.Id == id))
+            {
+                var product = _context.Product.SingleOrDefault(x => x.Id == id);
+                var sizes = _context.Size.Where(x => x.Product == product);
+                var ratings = _context.Rating.Where(x => x.Product == product);
+                var images = _context.Image.Where(x => x.Product == product);
+                var cartDetails = _context.CartDetail.Where(x => x.Product == product);
+
+                _context.RemoveRange(sizes);
+                _context.RemoveRange(ratings);
+                _context.RemoveRange(images);
+                _context.RemoveRange(cartDetails);
+
+                _context.Remove(product);
+                _context.SaveChanges();
+
+                return Ok(new { message = "Delete product successfully." });
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet("Users")]

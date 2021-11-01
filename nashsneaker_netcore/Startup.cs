@@ -71,6 +71,10 @@ namespace NashSneaker
                 options.Cookie.IsEssential = true;
             });
 
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddScoped<JwtService>();
