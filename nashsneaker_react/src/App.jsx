@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import Login from './pages/Login';
 import { BrowserRouter, Link, Switch, Route, useHistory, Redirect } from 'react-router-dom';
-import { Box, CircularProgress, Container, Menu, MenuItem, Modal, AppBar, Toolbar, Typography, Button, IconButton } from '@material-ui/core';
+import { Box, CircularProgress, Container, Menu, MenuItem, Modal, Toolbar, Typography, Button, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -13,10 +13,11 @@ import Sidebar from './components/Sidebar';
 import MuiAppBar from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
 import Dashboard from './pages/Dashboard';
-import Categories from './pages/Categories';
-import Products from './pages/Products';
+import Categories from './pages/Categories/Categories';
+import Products from './pages/Products/Products';
 import ViewUsers from './pages/ViewUsers';
-import CategoryForm from './pages/CategoryForm';
+import CategoryForm from './pages/Categories/CategoryForm';
+import ProductForm from './pages/Products/ProductForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -223,6 +224,8 @@ function App() {
               <Route exact path='/categories/add-new' component={() => <CategoryForm />} />
               <Route exact path='/categories/edit/:id' component={() => <CategoryForm />} />
               <Route exact path='/products' component={() => <Products />} />
+              <Route exact path='/products/add-new' component={() => <ProductForm />} />
+              <Route exact path='/products/edit/:id' component={() => <ProductForm />} />
               <Route exact path='/view-users' component={() => <ViewUsers />} />
               <Route path='*' component={() => <div>404 Not Found!</div>}/>
             </Switch>

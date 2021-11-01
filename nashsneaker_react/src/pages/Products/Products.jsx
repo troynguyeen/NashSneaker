@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Grid, Paper, Table, TableBody, TableCell, TableHea
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
-import useApi from '../hooks/useApi';
+import useApi from '../../hooks/useApi';
 import { toast } from 'react-toastify';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
@@ -35,12 +35,14 @@ const useStyles = makeStyles((theme) => ({
 
 const headCells = [
     { id: 'id', align: 'center', disablePadding: false, label: 'Id', width: '50px' },
-    { id: 'name', align: 'left', disablePadding: false, label: 'Name', width: '100px' },
+    { id: 'name', align: 'left', disablePadding: false, label: 'Name', width: '150px' },
+    { id: 'category', align: 'left', disablePadding: false, label: 'Category', width: '50px' },
+    { id: 'price', align: 'left', disablePadding: false, label: 'Price', width: '100px' },
     { id: 'description', align: 'left', disablePadding: false, label: 'Description', width: '200px' },
     { id: 'action', align: 'center', disablePadding: false, label: 'Action', width: '50px' }
 ];
 
-const Categories = () => {
+const Products = () => {
 
     const classes = useStyles();
 
@@ -56,12 +58,12 @@ const Categories = () => {
     useEffect(() => {
         if(message !== '') {
             if(message === 'error') {
-                toast.error("Delete category failed", {
+                toast.error("Delete product failed", {
                     theme: "colored"
                 });
             }
             else {
-                FetchAPI("Categories")
+                FetchAPI("Products")
                 toast.success(message, {
                     theme: "colored"
                 });
@@ -71,8 +73,8 @@ const Categories = () => {
     }, [message])
 
     const deleteSelectedId = (id) => {
-        if(window.confirm("Are you sure to remove category #" + id +" ?")) {
-            DeleteAPI('DeleteCategory', id)
+        if(window.confirm("Are you sure to remove product #" + id +" ?")) {
+            DeleteAPI('DeleteProduct', id)
             setMessage('')
             setPage(rowsPerPage - emptyRows == 1 ? 0 : page)
         }
@@ -164,14 +166,14 @@ const Categories = () => {
 
     useEffect(() => {
         //Fetch API at the first rendering 
-        FetchAPI("Categories")
+        FetchAPI("Products")
 
     }, [])
 
     return (
         <React.Fragment>
-            <h1 style={{ textAlign: 'center', padding: '30px' }}>Categories Management</h1>
-            <Link to='/categories/add-new'>
+            <h1 style={{ textAlign: 'center', padding: '30px' }}>Products Management</h1>
+            <Link to='/products/add-new'>
                 <Button 
                     style={{ 
                         backgroundColor: '#009405', 
@@ -203,10 +205,12 @@ const Categories = () => {
                                         <TableRow key={index}>
                                             <TableCell align="center" style={{ paddingRight: '40px' }}>{record.id}</TableCell>
                                             <TableCell align="left">{record.name}</TableCell>
+                                            <TableCell align="left">{record.category.name}</TableCell>
+                                            <TableCell align="left">{record.price}</TableCell>
                                             <TableCell align="left">{record.description}</TableCell>
                                             <TableCell align="center">
                                                 <ButtonGroup variant="text">
-                                                    <Link to={`/categories/edit/${record.id}`}>
+                                                    <Link to={`/products/edit/${record.id}`}>
                                                         <Button><EditIcon color="primary"/></Button>
                                                     </Link>
                                                     <Button onClick={() => deleteSelectedId(record.id)}><DeleteIcon color="secondary" /></Button>
@@ -238,4 +242,4 @@ const Categories = () => {
     )
 }
 
-export default Categories
+export default Products
