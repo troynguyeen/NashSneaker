@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import { Button, Container, Grid, Paper, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import useApi from '../hooks/useApi';
+import useApi from '../../hooks/useApi';
 import { toast, ToastContainer } from 'react-toastify';
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useHistory, useParams, useLocation } from 'react-router-dom'
@@ -59,7 +59,7 @@ const CategoryForm = () => {
 
     const [title, setTitle] = useState('Add new category')
     
-    const {values, setValues, message, setMessage, FetchAPI, GetByIdAPI, PostAPI, PutAPI, handleInputChange} = useApi(initialValue);
+    const {values, setValues, message, setMessage, GetByIdAPI, PostAPI, PutAPI, handleInputChange} = useApi(initialValue);
 
     useEffect(() => {
         if(message !== '') {
