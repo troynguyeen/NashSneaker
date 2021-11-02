@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import Login from './pages/Login';
-import { BrowserRouter, Link, Switch, Route, useHistory, Redirect } from 'react-router-dom';
+import { BrowserRouter, Link, Switch, Route, useLocation, Redirect } from 'react-router-dom';
 import { Box, CircularProgress, Container, Menu, MenuItem, Modal, Toolbar, Typography, Button, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -49,7 +49,7 @@ function App() {
 
   const classes = useStyles();
 
-  const history = useHistory();
+  const location = useLocation();
 
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
@@ -132,107 +132,118 @@ function App() {
     
   },[fullName])
 
+  useEffect(() => {
+    if(localStorage.getItem('jwt') != null && location.pathname != '/login') {
+      const jwt = JSON.parse(atob(localStorage.getItem('jwt').split('.')[1]))
+
+      if(jwt.exp !== null) {
+        if(jwt.exp*1000 < Date.now()) {
+          alert('Bạn đã hết hạn phiên đăng nhập.')
+          handleLogout();
+        }
+      }
+    }
+  }, [location])
+
   return (
-    <BrowserRouter>
-      <ToastProvider autoDismiss={true}>
-        <Modal open={isLoading} onClose={!isLoading}>
-          <Box className={classes.boxLoading}>
-            <CircularProgress style={{ color: "#3F5EFB" }}/>
-          </Box>
-        </Modal>
-        <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={true}
-            closeOnClick={true}
-            rtl={false}
-            pauseOnFocusLoss={true}
-            draggable={true}
-            pauseOnHover={true}
-        />
-        <AppBar className={classes.header} position="static" open={open}>
-          <Toolbar style={{ display: 'flex', justifyContent: 'space-between'}}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              {
-                open ? '' 
-                :
-                <IconButton 
-                  className={classes.menuButton} 
-                  edge="start" 
-                  color="inherit" 
-                  aria-label="menu"
-                  onClick={handleDrawerOpen}
-                >
-                  <MenuIcon />
-                </IconButton>
-              }
-              <Link to="/">
-                <Typography className={classes.title} variant="h6">
-                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>NashSneaker</div>
-                </Typography>
+    <React.Fragment>
+      <Modal open={isLoading} onClose={!isLoading}>
+        <Box className={classes.boxLoading}>
+          <CircularProgress style={{ color: "#3F5EFB" }}/>
+        </Box>
+      </Modal>
+      <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick={true}
+          rtl={false}
+          pauseOnFocusLoss={true}
+          draggable={true}
+          pauseOnHover={true}
+      />
+      <AppBar className={classes.header} position="static" open={open}>
+        <Toolbar style={{ display: 'flex', justifyContent: 'space-between'}}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            {
+              open ? '' 
+              :
+              <IconButton 
+                className={classes.menuButton} 
+                edge="start" 
+                color="inherit" 
+                aria-label="menu"
+                onClick={handleDrawerOpen}
+              >
+                <MenuIcon />
+              </IconButton>
+            }
+            <Link to="/">
+              <Typography className={classes.title} variant="h6">
+                  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>NashSneaker</div>
+              </Typography>
+            </Link>
+          </div>
+            {
+              fullName == '' ?
+              <Link to="/login">
+                <Button color="inherit">Login</Button>
               </Link>
-            </div>
-              {
-                fullName == '' ?
-                <Link to="/login">
-                  <Button color="inherit">Login</Button>
-                </Link>
-                :
-                <div style={{ display: 'flex', alignItems: 'center', fontSize: '20px', fontWeight: '500' }}>
-                  <Button
-                    onClick={handleMenu}
-                    color="inherit"
-                  >
-                    <AccountCircleIcon style={{ fontSize: '30px', paddingRight: '10px' }}/>
-                    {fullName}
-                  </Button>
-                  <Menu
-                    style={{ top: '50px', left: '1700px' }}
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'center',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'center',
-                    }}
-                    open={openMenu}
-                    onClose={handleClose}
-                  >
-                    <MenuItem style={{ width: '120px' }} onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem style={{ width: '120px' }} onClick={handleLogout}>Logout</MenuItem>
-                  </Menu>
-                </div>
-              }
-          </Toolbar>
-        </AppBar>
-        <Sidebar 
-          open={open}
-          handleDrawerClose={handleDrawerClose} 
-          drawerWidth={drawerWidth}
-        />
-        <Main open={open} style={{paddingLeft: '250px'}}>
-          <Container>
-            <Switch>
-              <Route exact path="/login" component={() => fullName == '' ? <Login fullName={fullName} setFullName={setFullName}/> : <Redirect to="/dashboard"/>} />
-              {fullName == '' ? <Route render={() => <Redirect to="/login"/>}/> : ''}
-              <Route exact path='/' component={() => <Redirect to="/dashboard"/>} />
-              <Route exact path='/dashboard' component={() => <Dashboard />} />
-              <Route exact path='/categories' component={() => <Categories />} />
-              <Route exact path='/categories/add-new' component={() => <CategoryForm />} />
-              <Route exact path='/categories/edit/:id' component={() => <CategoryForm />} />
-              <Route exact path='/products' component={() => <Products />} />
-              <Route exact path='/products/add-new' component={() => <ProductForm />} />
-              <Route exact path='/products/edit/:id' component={() => <ProductForm />} />
-              <Route exact path='/view-users' component={() => <ViewUsers />} />
-              <Route path='*' component={() => <div>404 Not Found!</div>}/>
-            </Switch>
-          </Container>
-        </Main>
-      </ToastProvider>
-    </BrowserRouter>
+              :
+              <div style={{ display: 'flex', alignItems: 'center', fontSize: '20px', fontWeight: '500' }}>
+                <Button
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircleIcon style={{ fontSize: '30px', paddingRight: '10px' }}/>
+                  {fullName}
+                </Button>
+                <Menu
+                  style={{ top: '50px', left: '1700px' }}
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                  }}
+                  open={openMenu}
+                  onClose={handleClose}
+                >
+                  <MenuItem style={{ width: '120px' }} onClick={handleClose}>Profile</MenuItem>
+                  <MenuItem style={{ width: '120px' }} onClick={handleLogout}>Logout</MenuItem>
+                </Menu>
+              </div>
+            }
+        </Toolbar>
+      </AppBar>
+      <Sidebar 
+        open={open}
+        handleDrawerClose={handleDrawerClose} 
+        drawerWidth={drawerWidth}
+      />
+      <Main open={open} style={{paddingLeft: '250px'}}>
+        <Container>
+          <Switch>
+            <Route exact path="/login" component={() => fullName == '' ? <Login fullName={fullName} setFullName={setFullName}/> : <Redirect to="/dashboard"/>} />
+            {fullName == '' ? <Route render={() => <Redirect to="/login"/>}/> : ''}
+            <Route exact path='/' component={() => <Redirect to="/dashboard"/>} />
+            <Route exact path='/dashboard' component={() => <Dashboard />} />
+            <Route exact path='/categories' component={() => <Categories />} />
+            <Route exact path='/categories/add-new' component={() => <CategoryForm />} />
+            <Route exact path='/categories/edit/:id' component={() => <CategoryForm />} />
+            <Route exact path='/products' component={() => <Products />} />
+            <Route exact path='/products/add-new' component={() => <ProductForm />} />
+            <Route exact path='/products/edit/:id' component={() => <ProductForm />} />
+            <Route exact path='/view-users' component={() => <ViewUsers />} />
+            <Route path='*' component={() => <div>404 Not Found!</div>}/>
+          </Switch>
+        </Container>
+      </Main>
+    </React.Fragment>
   );
 }
 

@@ -113,7 +113,7 @@ const CategoryForm = () => {
                             <TextField
                                 name="name"
                                 variant="outlined"
-                                label="Category name"
+                                label="Name"
                                 value={values.name}
                                 onChange={handleInputChange}
                                 InputProps={{
@@ -127,8 +127,8 @@ const CategoryForm = () => {
                                 value={values.description}
                                 onChange={handleInputChange}
                                 aria-label="textarea"
-                                placeholder="Category description..."
-                                style={{ width: '600px', height: '150px', margin: '20px', padding: '15px' }}
+                                placeholder="Description..."
+                                style={{ width: '600px', height: '150px', margin: '20px', padding: '15px', fontSize: '1rem', fontFamily: 'inherit' }}
                             />
                         <div className={classes.buttonContainer}>
                             <Button className={classes.button} variant="contained" color="primary" type="submit">Submit</Button>
