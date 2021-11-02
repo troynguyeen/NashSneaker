@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, Grid, Paper, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TableSortLabel } from '@material-ui/core';
+import { Backdrop, Button, ButtonGroup, Fade, Grid, Modal, Paper, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TableSortLabel } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
@@ -7,6 +7,8 @@ import useApi from '../../hooks/useApi';
 import { toast } from 'react-toastify';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,10 +33,24 @@ const useStyles = makeStyles((theme) => ({
         top: 20,
         width: 1,
     },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    modalForm: {
+        position: 'absolute',
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        outline: 'none',
+        width: '600px'
+    },
 }))
 
 const headCells = [
     { id: 'id', align: 'center', disablePadding: false, label: 'Id', width: '50px' },
+    { id: 'images', align: 'left', disablePadding: false, label: 'Images', width: '100px' },
     { id: 'name', align: 'left', disablePadding: false, label: 'Name', width: '150px' },
     { id: 'category', align: 'left', disablePadding: false, label: 'Category', width: '50px' },
     { id: 'price', align: 'left', disablePadding: false, label: 'Price', width: '100px' },
@@ -48,6 +64,8 @@ const Products = () => {
 
     const {list, message, setMessage, FetchAPI, DeleteAPI} = useApi();
 
+    const [images, setImages] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('id');
     const [page, setPage] = useState(0);
@@ -78,6 +96,16 @@ const Products = () => {
             setMessage('')
             setPage(rowsPerPage - emptyRows == 1 ? 0 : page)
         }
+    }
+
+    const handleOpenModal = (id) => {
+        const imgs = list.filter(x => x.id == id);
+        setIsOpen(true)
+        setImages(imgs[0].images)
+    }
+
+    const handleCloseModal = () => {
+        setIsOpen(false)
     }
 
     const handleRequestSort = (event, property) => {
@@ -204,6 +232,19 @@ const Products = () => {
                                     return (
                                         <TableRow key={index}>
                                             <TableCell align="center" style={{ paddingRight: '40px' }}>{record.id}</TableCell>
+                                            <TableCell align="center">
+                                                <Carousel
+                                                    infiniteLoop 
+                                                    emulateTouch 
+                                                    autoPlay
+                                                    interval={5000}
+                                                    transitionTime={1000}
+                                                    showThumbs={false}
+                                                    onClickItem={() => handleOpenModal(record.id)}
+                                                >
+                                                    {record.images.map(img => <img src={require('./' + img.path.replaceAll('\\', '/')).default} />)}
+                                                </Carousel>
+                                            </TableCell>
                                             <TableCell align="left">{record.name}</TableCell>
                                             <TableCell align="left">{record.category.name}</TableCell>
                                             <TableCell align="left">{record.price}</TableCell>
@@ -224,6 +265,35 @@ const Products = () => {
                                         <TableCell colSpan={7} />
                                     </TableRow>
                                 )}
+                                <Modal
+                                    aria-labelledby="transition-modal-title"
+                                    aria-describedby="transition-modal-description"
+                                    className={classes.modal}
+                                    open={isOpen}
+                                    onClose={() => handleCloseModal()}
+                                    closeAfterTransition
+                                    BackdropComponent={Backdrop}
+                                    BackdropProps={{
+                                    timeout: 500,
+                                    }}
+                                >
+                                    <Fade in={isOpen}>
+                                        <Paper className={classes.modalForm} elevation={20}>
+                                            <Grid className={classes.grid} container>
+                                                <Carousel 
+                                                    infiniteLoop 
+                                                    emulateTouch 
+                                                    autoPlay
+                                                    interval={5000}
+                                                    transitionTime={1000}
+                                                    showThumbs={false}
+                                                >
+                                                    {images.map(img => <img src={require('./' + img.path.replaceAll('\\', '/')).default} />)}
+                                                </Carousel>
+                                            </Grid>
+                                        </Paper>
+                                    </Fade>
+                                </Modal>
                             </TableBody>
                         </Table>
                     </Grid>
