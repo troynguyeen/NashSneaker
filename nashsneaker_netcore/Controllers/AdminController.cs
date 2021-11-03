@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,12 +8,13 @@ using NashSneaker.Helpers;
 using NashSneaker.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace NashSneaker.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
@@ -22,19 +24,22 @@ namespace NashSneaker.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly NashSneakerContext _context;
         private readonly JwtService _jwtService;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
         public AdminController(
             RoleManager<IdentityRole> roleManager, 
             UserManager<User> userManager, 
             SignInManager<User> signInManager, 
             NashSneakerContext context,
-            JwtService jwtService)
+            JwtService jwtService,
+            IWebHostEnvironment hostEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _context = context;
             _jwtService = jwtService;
+            _hostEnvironment = hostEnvironment;
         }
 
         public IActionResult Index()
@@ -159,7 +164,7 @@ namespace NashSneaker.Controllers
                     _category.Description = category.Description;
                     _context.SaveChanges();
 
-                    return Ok(new { message = "Edit category successfully." });
+                    return Ok(new { message = "Update category successfully." });
                 }
             }
             else
@@ -200,6 +205,136 @@ namespace NashSneaker.Controllers
             return Ok(products);
         }
 
+        [HttpGet("GetProductById/{id}")]
+        public IActionResult GetProductById(int id)
+        {
+            if (_context.Product.Any(x => x.Id == id))
+            {
+                var product = _context.Product.SingleOrDefault(x => x.Id == id);
+                var categories = _context.Category.ToList();
+                var images = _context.Image.Where(x => x.Product == product).ToList();
+
+                foreach (var item in categories)
+                {
+                    item.Products = new List<Product>();
+                }
+
+                return Ok(product);
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+        }
+
+        [HttpPost("AddNewProduct")]
+        public async Task<IActionResult> AddNewProduct([FromForm]AddOrEditProductViewModel vm)
+        {
+            if (!_context.Product.Any(x => x.Name == vm.Name))
+            {
+                var product = new Product();
+                var category = _context.Category.SingleOrDefault(x => x.Id == vm.CategoryId);
+                product.Name = vm.Name;
+                product.Price = float.Parse(vm.Price);
+                product.Description = vm.Description;
+                product.CreatedDate = DateTime.Now;
+                product.UpdatedDate = DateTime.Now;
+                product.Category = category;
+
+                _context.Add(product);
+                _context.SaveChanges();
+
+                var images = new List<Image>();
+                var _product = _context.Product.SingleOrDefault(x => x.Name == product.Name);
+
+                foreach (var item in vm.imagesFile)
+                {
+                    var image = new Image();
+                    image.Name = Path.GetFileNameWithoutExtension(item.FileName) + "_" + DateTime.Now.ToString("ssfff");
+                    //save each image & get imageName + extension
+                    image.Path = await SaveImage(item, item.FileName);
+                    image.Product = _product;
+                    images.Add(image);
+                }
+
+                _context.AddRange(images);
+                _context.SaveChanges();
+
+                return Ok(new { message = "Add new product successfully." });
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        public async Task<string> SaveImage(IFormFile imageFile, string imageName)
+        {
+            string _imageName = Path.GetFileNameWithoutExtension(imageName) + "_" + DateTime.Now.ToString("ssfff") + Path.GetExtension(imageName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot\\images\\products", _imageName);
+            using( var fileStream = new FileStream(imagePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+            return _imageName;
+        }
+
+        public void DeleteImage(string imageName)
+        {
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot\\images\\products", imageName);
+            if(System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath);
+            }
+        }
+
+        [HttpPut("EditProduct/{id}")]
+        public async Task<IActionResult> EditProduct([FromForm]AddOrEditProductViewModel vm)
+        {
+            if (_context.Product.Any(x => x.Id == vm.Id))
+            {
+                var product = _context.Product.SingleOrDefault(x => x.Id == vm.Id);
+                var category = _context.Category.SingleOrDefault(x => x.Id == vm.CategoryId);
+                product.Name = vm.Name;
+                product.Price = float.Parse(vm.Price);
+                product.Description = vm.Description;
+                product.UpdatedDate = DateTime.Now;
+                product.Category = category;
+
+                //Delete old images
+                var images = _context.Image.Where(x => x.Product == product);
+                foreach (var img in images)
+                {
+                    DeleteImage(img.Path);
+                }
+
+                _context.RemoveRange(images);
+                _context.SaveChanges();
+
+                //Add new images to update
+                var _images = new List<Image>();
+                foreach (var item in vm.imagesFile)
+                {
+                    var image = new Image();
+                    image.Name = Path.GetFileNameWithoutExtension(item.FileName) + "_" + DateTime.Now.ToString("ssfff");
+                    //save each image & get imageName + extension
+                    image.Path = await SaveImage(item, item.FileName);
+                    image.Product = product;
+                    _images.Add(image);
+                }
+
+                _context.AddRange(_images);
+                _context.SaveChanges();
+
+                return Ok(new { message = "Update product successfully." });
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpDelete("DeleteProduct/{id}")]
         public IActionResult DeleteProduct(int id)
         {
@@ -210,6 +345,11 @@ namespace NashSneaker.Controllers
                 var ratings = _context.Rating.Where(x => x.Product == product);
                 var images = _context.Image.Where(x => x.Product == product);
                 var cartDetails = _context.CartDetail.Where(x => x.Product == product);
+
+                foreach(var img in images)
+                {
+                    DeleteImage(img.Path);
+                }
 
                 _context.RemoveRange(sizes);
                 _context.RemoveRange(ratings);
