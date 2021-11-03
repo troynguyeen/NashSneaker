@@ -64,6 +64,8 @@ const Products = () => {
 
     const {list, message, setMessage, FetchAPI, DeleteAPI} = useApi();
 
+    const serverUrl = 'https://localhost:44357/images/products/';
+
     const [images, setImages] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [order, setOrder] = useState('asc');
@@ -242,7 +244,7 @@ const Products = () => {
                                                     showThumbs={false}
                                                     onClickItem={() => handleOpenModal(record.id)}
                                                 >
-                                                    {record.images.map(img => <img src={require('./' + img.path.replaceAll('\\', '/')).default} />)}
+                                                    {record.images.map(img => <img src={serverUrl + img.path} />)}
                                                 </Carousel>
                                             </TableCell>
                                             <TableCell align="left">{record.name}</TableCell>
@@ -288,7 +290,7 @@ const Products = () => {
                                                     transitionTime={1000}
                                                     showThumbs={false}
                                                 >
-                                                    {images.map(img => <img src={require('./' + img.path.replaceAll('\\', '/')).default} />)}
+                                                    {images.map(img => <img src={serverUrl + img.path} />)}
                                                 </Carousel>
                                             </Grid>
                                         </Paper>

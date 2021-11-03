@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import TextareaAutosize from '@mui/material/TextareaAutosize';
-import { Button, ButtonGroup, Container, Grid, Paper, TextField } from '@material-ui/core';
+import { Button, ButtonGroup, CircularProgress, Container, Grid, Modal, Paper, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import useApi from '../../hooks/useApi';
 import { toast, ToastContainer } from 'react-toastify';
@@ -13,6 +13,7 @@ import Select from '@mui/material/Select';
 import ImageUploading from "react-images-uploading";
 import { BsCloudUploadFill } from "react-icons/bs";
 import DeleteIcon from '@material-ui/icons/Delete';
+import { Box } from '@mui/system';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,15 +49,20 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         marginRight: '15px !important'
-    }
+    },
+    boxLoading: {
+        position: 'absolute',
+        top: '35%',
+        left: '48%',
+        outline: 'none'
+    },
 }))
 
 const initialValue = {
     name: '',
     categoryId: '',
     price: '',
-    description: '',
-    images: []
+    description: ''
 }
 
 const ProductForm = () => {
@@ -67,10 +73,12 @@ const ProductForm = () => {
     const location = useLocation();
     const param = useParams();
 
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState([])
     const [title, setTitle] = useState('Add new product')
     
     const {list, values, setValues, message, setMessage, FetchAPI, GetByIdAPI, PostAPI, PutAPI, handleInputChange} = useApi(initialValue);
+
+    const serverUrl = 'https://localhost:44357/images/products/';
 
     useEffect(() => {
         if(message !== '') {
@@ -89,22 +97,32 @@ const ProductForm = () => {
     }, [message])
 
     useEffect(() => {
-        //fetchAPI for categories select
-        FetchAPI("Categories");
-
         //Switch route
         if(location.pathname.includes("edit")) {
             param.id > 0 ? GetByIdAPI('GetProductById', param.id) : history.push('/products')
-            setTitle('Edit Product')
+            setTitle('Edit Product');
         }
+
+        //fetchAPI for categories select
+        FetchAPI("Categories");
 
     }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(values.name != '' && values.description != '') {
-            param.id > 0 ? PutAPI('EditProduct') : PostAPI('AddNewProduct');
-            setMessage('')
+
+        if(values.name != '' && values.categoryId != '' && values.price != '' && values.description != '' && images.length > 0) {
+            const formData = new FormData();
+            formData.append('name', values.name);
+            formData.append('categoryId', values.categoryId);
+            formData.append('price', values.price);
+            formData.append('description', values.description);
+            images.map(img => formData.append('imagesName', img.file.name))
+            images.map(img => formData.append('imagesFile', img.file))
+
+            param.id > 0 ? PutAPI('EditProduct') : PostAPI('AddNewProduct', formData);
+            setMessage('');
+
         }
         else {
             toast.warning("All information can not be empty", {
@@ -117,9 +135,8 @@ const ProductForm = () => {
         setValues(initialValue);
     }
 
-    const onChange = (imageList) => {
-        // data for submit
-        console.log(imageList);
+    const onChangeImages = (imageList) => {
+        //images for preview
         setImages(imageList);
     };
     
@@ -146,7 +163,7 @@ const ProductForm = () => {
                                     name="categoryId"
                                     labelId="label"
                                     variant="outlined"
-                                    value={values.categoryId}
+                                    value={values.category != null && values.categoryId == null ? values.category.id : values.categoryId}
                                     label="Category"
                                     onChange={handleInputChange}
                                     style={{ textAlign: 'start' }}
@@ -180,7 +197,7 @@ const ProductForm = () => {
                             <ImageUploading
                                 multiple
                                 value={images}
-                                onChange={onChange}
+                                onChange={onChangeImages}
                                 maxNumber={3}
                                 dataURLKey="data_url"
                             >
@@ -221,21 +238,33 @@ const ProductForm = () => {
                                     </div>
                                     {
                                         errors && <div style={{ color: 'red', fontSize: '15px', paddingBottom: '20px'}}>
-                                            {errors.maxNumber && <span>You can only choose up to 3 images</span>}
+                                            {errors.maxNumber && <span>You can only upload maximum 3 images</span>}
                                             {errors.acceptType && <span>Your selected file type is not allow</span>}
                                             {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
                                             {errors.resolution && <span>Selected file is not match your desired resolution</span>}
                                         </div>
                                     }
                                     <div style={{ display: 'flex' }}>
-                                        {imageList.map((image, index) => (
-                                            <div key={index} className="image-item" style={{ padding: '0 15px' }}>
-                                                <img src={image.data_url} alt="" width="200" onClick={() => onImageUpdate(index)} />
-                                                <div>
-                                                    <DeleteIcon color="secondary" onClick={() => onImageRemove(index)} style={{ paddingTop: '5px' }}/>
+                                        {
+                                            values.images != null && values.images.length > 0 ?
+                                            values.images.map((image, index) => (
+                                                <div key={index} className="image-item" style={{ padding: '0 15px' }}>
+                                                    <img src={serverUrl + image.path} alt="" width="200" onClick={() => onImageUpdate(index)} />
+                                                    <div>
+                                                        <DeleteIcon color="secondary" onClick={() => onImageRemove(index)} style={{ paddingTop: '5px' }}/>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ))}
+                                            ))
+                                            :
+                                            imageList.map((image, index) => (
+                                                <div key={index} className="image-item" style={{ padding: '0 15px' }}>
+                                                    <img src={image.data_url} alt="" width="200" onClick={() => onImageUpdate(index)} />
+                                                    <div>
+                                                        <DeleteIcon color="secondary" onClick={() => onImageRemove(index)} style={{ paddingTop: '5px' }}/>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
                                     </div>
                                 </div>
                                 )}
