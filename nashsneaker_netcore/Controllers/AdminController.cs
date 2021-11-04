@@ -47,6 +47,41 @@ namespace NashSneaker.Controllers
             return Ok();
         }
 
+        [HttpGet("ViewUsers")]
+        public IActionResult ViewUsers()
+        {
+            var listUserVM = new List<UserViewModel>();
+            var users = _context.Users.ToList();
+            var roles = _context.Roles.ToList();
+
+            foreach(var item in users)
+            {
+                UserViewModel userVM = new UserViewModel();
+                var userRole = _context.UserRoles.SingleOrDefault(x => x.UserId == item.Id);
+                var role = _context.Roles.SingleOrDefault(x => x.Id == userRole.RoleId);
+                userVM.Id = item.Id;
+                userVM.FirstName = item.FirstName;
+                userVM.LastName = item.LastName;
+                userVM.Email = item.Email;
+                userVM.PhoneNumber = item.PhoneNumber;
+                userVM.Role = role.Name;
+
+                if(userVM.Role != "Admin")
+                {
+                    listUserVM.Add(userVM);
+                }
+            }
+
+            return Ok(listUserVM);
+        }
+
+        [HttpGet("GetRoles")]
+        public IActionResult GetRoles()
+        {
+            var roles = _context.Roles.Where(x => x.Name != "Admin").ToList();
+            return Ok(roles);
+        }
+
         [HttpPost("CreateRole")]
         public async Task<IActionResult> CreateRole(CreateRoleViewModel vm)
         {
@@ -63,21 +98,20 @@ namespace NashSneaker.Controllers
             }
         }
 
-        [HttpPost("UpdateUserRole")]
+        [HttpPut("UpdateUserRole")]
         public async Task<IActionResult> UpdateUserRole(UpdateUserRoleViewModel vm)
         {
             var user = await _userManager.FindByEmailAsync(vm.UserEmail);
+            var rolesOld = await _userManager.GetRolesAsync(user);
 
-            if (vm.Delete)
+            foreach(var item in rolesOld)
             {
-                await _userManager.RemoveFromRoleAsync(user, vm.Role);
+                await _userManager.RemoveFromRoleAsync(user, item);
             }
-            else
-            {
-                await _userManager.AddToRoleAsync(user, vm.Role);
-            }
+            
+            await _userManager.AddToRoleAsync(user, vm.RoleName);
 
-            return Ok(vm);
+            return Ok(new { message = "Update user role successfully." });
         }
 
         [AllowAnonymous]
@@ -397,13 +431,6 @@ namespace NashSneaker.Controllers
             {
                 return BadRequest();
             }
-        }
-
-        [HttpGet("Users")]
-        public IActionResult Users()
-        {
-            var users = _context.Users.ToList();
-            return Ok(users);
         }
     }
 }
