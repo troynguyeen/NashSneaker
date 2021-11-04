@@ -14,7 +14,9 @@ namespace NashSneaker.ViewModel
         public string Price { get; set; }
         public string Description { get; set; }
         public int CategoryId { get; set; }
+        public List<string> Sizes { get; set; }
         public List<string> imagesName { get; set; }
         public List<IFormFile> imagesFile { get; set; }
+        public List<string> imagesDelete { get; set; }
     }
 }

@@ -74,9 +74,9 @@ const useApi = (initialValue) => {
     }
 
     //PUT API
-    const PutAPI = async (ApiName) => {
+    const PutAPI = async (ApiName, formData = null) => {
         try {
-            const response = await axios.put(`https://localhost:44357/api/Admin/${ApiName}`, values,
+            const response = await axios.put(`https://localhost:44357/api/Admin/${ApiName}`, formData != null ? formData : values,
             {
                 headers: {
                   'Authorization': `Bearer ${localStorage.getItem("jwt")}`

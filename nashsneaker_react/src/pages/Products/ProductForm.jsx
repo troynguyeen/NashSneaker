@@ -73,6 +73,7 @@ const ProductForm = () => {
     const location = useLocation();
     const param = useParams();
 
+    const [imagesDelete, setImagesDelete] = useState([])
     const [images, setImages] = useState([])
     const [title, setTitle] = useState('Add new product')
     
@@ -108,19 +109,42 @@ const ProductForm = () => {
 
     }, [])
 
+    useEffect(() => {
+        //for update product
+        if(values.category != null && values.categoryId == null) {
+            setValues({...values, categoryId: values.category.id})
+        }
+
+        if(values.images != null && images.length == 0) {
+            const imagePath = []
+            values.images.map(img => imagePath.push({data_url: serverUrl + img.path, path: img.path}))
+            setImages(imagePath)
+        }
+    }, [values])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if(values.name != '' && values.categoryId != '' && values.price != '' && values.description != '' && images.length > 0) {
             const formData = new FormData();
+            formData.append('id', values.id ? values.id : 0);
             formData.append('name', values.name);
             formData.append('categoryId', values.categoryId);
             formData.append('price', values.price);
             formData.append('description', values.description);
-            images.map(img => formData.append('imagesName', img.file.name))
-            images.map(img => formData.append('imagesFile', img.file))
+            images.map(img => {
+                if(img.file != null) {
+                    formData.append('imagesName', img.file.name);
+                    formData.append('imagesFile', img.file);
+                }
+            })
+            imagesDelete.map(img => formData.append('imagesDelete', img));
 
-            param.id > 0 ? PutAPI('EditProduct') : PostAPI('AddNewProduct', formData);
+            //this the data for sizes because I have no time to make the UI
+            const sizes = [39, 40, 41];
+            sizes.map(size => formData.append('sizes', size));
+
+            param.id > 0 ? PutAPI('EditProduct', formData) : PostAPI('AddNewProduct', formData);
             setMessage('');
 
         }
@@ -138,6 +162,15 @@ const ProductForm = () => {
     const onChangeImages = (imageList) => {
         //images for preview
         setImages(imageList);
+
+        //Get images to delete
+        if(values.images != null && values.images.length > 0) {
+            const initialImages = values.images.map(x => x.path);
+            const updatedImages = imageList.map(x => x.path);
+
+            const deletedImages =  initialImages.filter(img => !updatedImages.includes(img))
+            setImagesDelete(deletedImages)
+        }
     };
     
     return (
@@ -246,16 +279,6 @@ const ProductForm = () => {
                                     }
                                     <div style={{ display: 'flex' }}>
                                         {
-                                            values.images != null && values.images.length > 0 ?
-                                            values.images.map((image, index) => (
-                                                <div key={index} className="image-item" style={{ padding: '0 15px' }}>
-                                                    <img src={serverUrl + image.path} alt="" width="200" onClick={() => onImageUpdate(index)} />
-                                                    <div>
-                                                        <DeleteIcon color="secondary" onClick={() => onImageRemove(index)} style={{ paddingTop: '5px' }}/>
-                                                    </div>
-                                                </div>
-                                            ))
-                                            :
                                             imageList.map((image, index) => (
                                                 <div key={index} className="image-item" style={{ padding: '0 15px' }}>
                                                     <img src={image.data_url} alt="" width="200" onClick={() => onImageUpdate(index)} />

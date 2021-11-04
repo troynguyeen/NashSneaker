@@ -245,6 +245,7 @@ namespace NashSneaker.Controllers
                 _context.Add(product);
                 _context.SaveChanges();
 
+                //Images for product
                 var images = new List<Image>();
                 var _product = _context.Product.SingleOrDefault(x => x.Name == product.Name);
 
@@ -259,6 +260,20 @@ namespace NashSneaker.Controllers
                 }
 
                 _context.AddRange(images);
+                _context.SaveChanges();
+
+                //Sizes for product:
+                var sizes = new List<Size>();
+                
+                foreach(var item in vm.Sizes)
+                {
+                    var size = new Size();
+                    size.Name = Int16.Parse(item);
+                    size.Product = _product;
+                    sizes.Add(size);
+                }
+
+                _context.AddRange(sizes);
                 _context.SaveChanges();
 
                 return Ok(new { message = "Add new product successfully." });
@@ -289,45 +304,62 @@ namespace NashSneaker.Controllers
             }
         }
 
-        [HttpPut("EditProduct/{id}")]
+        [HttpPut("EditProduct")]
         public async Task<IActionResult> EditProduct([FromForm]AddOrEditProductViewModel vm)
         {
             if (_context.Product.Any(x => x.Id == vm.Id))
             {
-                var product = _context.Product.SingleOrDefault(x => x.Id == vm.Id);
-                var category = _context.Category.SingleOrDefault(x => x.Id == vm.CategoryId);
-                product.Name = vm.Name;
-                product.Price = float.Parse(vm.Price);
-                product.Description = vm.Description;
-                product.UpdatedDate = DateTime.Now;
-                product.Category = category;
+                var currentProduct = _context.Product.SingleOrDefault(x => x.Id == vm.Id);
 
-                //Delete old images
-                var images = _context.Image.Where(x => x.Product == product);
-                foreach (var img in images)
+                if (!_context.Product.Any(x => x.Name == vm.Name && vm.Name != currentProduct.Name))
                 {
-                    DeleteImage(img.Path);
+                    var product = _context.Product.SingleOrDefault(x => x.Id == vm.Id);
+                    var category = _context.Category.SingleOrDefault(x => x.Id == vm.CategoryId);
+                    product.Name = vm.Name;
+                    product.Price = float.Parse(vm.Price);
+                    product.Description = vm.Description;
+                    product.UpdatedDate = DateTime.Now;
+                    product.Category = category;
+
+                    //Check images need to be deleted
+                    if (vm.imagesDelete != null && vm.imagesDelete.Count > 0)
+                    {
+                        foreach (var item in vm.imagesDelete)
+                        {
+                            //Delete each image in this list
+                            var imageDelete = _context.Image.SingleOrDefault(x => x.Path == item);
+                            DeleteImage(item);
+                            _context.Remove(imageDelete);
+                            _context.SaveChanges();
+                        }
+                    }
+
+                    //Check images need to be added
+                    if (vm.imagesFile != null && vm.imagesFile.Count > 0)
+                    {
+                        var _images = new List<Image>();
+                        foreach (var item in vm.imagesFile)
+                        {
+                            var image = new Image();
+                            image.Name = Path.GetFileNameWithoutExtension(item.FileName) + "_" + DateTime.Now.ToString("ssfff");
+                            //save each image & get imageName + extension
+                            image.Path = await SaveImage(item, item.FileName);
+                            image.Product = product;
+                            _images.Add(image);
+                        }
+
+                        _context.AddRange(_images);
+                        _context.SaveChanges();
+                    }
+
+                    _context.SaveChanges();
+
+                    return Ok(new { message = "Update product successfully." });
                 }
-
-                _context.RemoveRange(images);
-                _context.SaveChanges();
-
-                //Add new images to update
-                var _images = new List<Image>();
-                foreach (var item in vm.imagesFile)
+                else
                 {
-                    var image = new Image();
-                    image.Name = Path.GetFileNameWithoutExtension(item.FileName) + "_" + DateTime.Now.ToString("ssfff");
-                    //save each image & get imageName + extension
-                    image.Path = await SaveImage(item, item.FileName);
-                    image.Product = product;
-                    _images.Add(image);
+                    return BadRequest();
                 }
-
-                _context.AddRange(_images);
-                _context.SaveChanges();
-
-                return Ok(new { message = "Update product successfully." });
             }
             else
             {
