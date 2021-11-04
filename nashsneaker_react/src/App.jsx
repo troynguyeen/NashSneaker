@@ -231,7 +231,7 @@ function App() {
             <Route exact path="/login" component={() => fullName == '' ? <Login fullName={fullName} setFullName={setFullName}/> : <Redirect to="/dashboard"/>} />
             {fullName == '' ? <Route render={() => <Redirect to="/login"/>}/> : ''}
             <Route exact path='/' component={() => <Redirect to="/dashboard"/>} />
-            <Route exact path='/dashboard' component={() => <Dashboard />} />
+            <Route exact path='/dashboard' component={() => <Dashboard fullName={fullName}/>} />
             <Route exact path='/categories' component={() => <Categories />} />
             <Route exact path='/categories/add-new' component={() => <CategoryForm />} />
             <Route exact path='/categories/edit/:id' component={() => <CategoryForm />} />
