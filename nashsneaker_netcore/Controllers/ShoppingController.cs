@@ -67,7 +67,7 @@ namespace NashSneaker.Controllers
                 
                 product.Ratings = ratingList.Where(rating => rating.Product.Id == product.Id).ToList();
                 product.Images = imageList.Where(image => image.Product.Id == product.Id).ToList();
-                product.Sizes = sizeList.Where(size => size.Product.Id == product.Id).ToList();
+                product.Sizes = sizeList.Where(size => size.Product.Id == product.Id).OrderBy(x => x.Name).ToList();
                 product.Category = category.Where(category => category.Id == product.Category.Id).SingleOrDefault();
 
                 return View(product);
