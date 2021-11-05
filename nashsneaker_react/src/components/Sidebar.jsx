@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { MdSpaceDashboard, MdCategory } from "react-icons/md";
 import { GiConverseShoe } from "react-icons/gi";
 import { Link } from 'react-router-dom';
+import { IoNewspaperSharp } from "react-icons/io5";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,6 +93,14 @@ const Sidebar = (props) => {
               <GiConverseShoe style={{ fontSize: '20px', color: '#fff' }} />
             </ListItemIcon>
             <ListItemText primary={"Products"} />
+          </ListItem>
+        </Link>
+        <Link to='/orders'>
+          <ListItem button>
+            <ListItemIcon>
+              <IoNewspaperSharp style={{ fontSize: '20px', color: '#fff' }} />
+            </ListItemIcon>
+            <ListItemText primary={"Orders"} />
           </ListItem>
         </Link>
       </List>

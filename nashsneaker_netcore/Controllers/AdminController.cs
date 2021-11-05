@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using NashSneaker.Data;
 using NashSneaker.Helpers;
 using NashSneaker.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,6 +47,50 @@ namespace NashSneaker.Controllers
         public IActionResult Index()
         {
             return Ok();
+        }
+
+        [HttpGet("Profile")]
+        public IActionResult Profile()
+        {
+            //Get email admin from jwt token
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(token);
+            var emailFromPayload = jwtSecurityToken.Claims.First(claim => claim.Type == "email").Value;
+
+            var adminVM = new UserViewModel();
+            var admin = _context.Users.SingleOrDefault(x => x.Email == emailFromPayload);
+            var userRole = _context.UserRoles.SingleOrDefault(x => x.UserId == admin.Id);
+            var role = _context.Roles.SingleOrDefault(x => x.Id == userRole.RoleId);
+
+            adminVM.Id = admin.Id;
+            adminVM.FirstName = admin.FirstName;
+            adminVM.LastName = admin.LastName;
+            adminVM.Email = admin.Email;
+            adminVM.PhoneNumber = admin.PhoneNumber;
+            adminVM.Role = role.Name;
+
+            return Ok(adminVM);
+        }
+
+        [HttpPut("EditProfile")]
+        public IActionResult EditProfile(UserViewModel vm)
+        {
+            if(_context.Users.Any(x => x.Email == vm.Email))
+            {
+                var user = _context.Users.SingleOrDefault(x => x.Email == vm.Email);
+                user.FirstName = vm.FirstName;
+                user.LastName = vm.LastName;
+                user.PhoneNumber = vm.PhoneNumber;
+
+                _context.SaveChanges();
+
+                return Ok(new { message = "Update profile successfully." });
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet("ViewUsers")]
