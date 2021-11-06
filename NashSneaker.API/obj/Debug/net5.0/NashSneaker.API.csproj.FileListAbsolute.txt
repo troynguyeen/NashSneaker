@@ -154,3 +154,7 @@ C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\runtimes\win-arm\lib\net5.0\dotn
 C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\runtimes\win-arm64\lib\net5.0\dotnet-aspnet-codegenerator-design.exe
 C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\NashSneaker.dll
 C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\NashSneaker.pdb
+C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\NashSneaker.StaticWebAssets.xml
+C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\Microsoft.AspNetCore.Http.Features.dll
+C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
+C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\System.IO.Pipelines.dll
