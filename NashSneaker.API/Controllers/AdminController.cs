@@ -342,7 +342,7 @@ namespace NashSneaker.Controllers
                 _context.AddRange(images);
                 _context.SaveChanges();
 
-                //Sizes for product:
+                //Sizes for product
                 var sizes = new List<Size>();
                 
                 foreach(var item in vm.Sizes)
@@ -367,7 +367,7 @@ namespace NashSneaker.Controllers
         public async Task<string> SaveImage(IFormFile imageFile, string imageName)
         {
             string _imageName = Path.GetFileNameWithoutExtension(imageName) + "_" + DateTime.Now.ToString("ssfff") + Path.GetExtension(imageName);
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot\\images\\products", _imageName);
+            var imagePath = Path.Combine("C:\\NashSneaker\\nashsneaker_netcore\\wwwroot\\images\\products", _imageName);
             using( var fileStream = new FileStream(imagePath, FileMode.Create))
             {
                 await imageFile.CopyToAsync(fileStream);
@@ -377,7 +377,7 @@ namespace NashSneaker.Controllers
 
         public void DeleteImage(string imageName)
         {
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot\\images\\products", imageName);
+            var imagePath = Path.Combine("C:\\NashSneaker\\nashsneaker_netcore\\wwwroot\\images\\products", imageName);
             if(System.IO.File.Exists(imagePath))
             {
                 System.IO.File.Delete(imagePath);

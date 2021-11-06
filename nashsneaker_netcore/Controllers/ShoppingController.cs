@@ -55,11 +55,11 @@ namespace NashSneaker.Controllers
             }
         }
 
-        public IActionResult Detail(int id, string productName)
+        public IActionResult Detail(int id)
         {
-            if (productName != null && id != 0)
+            if (id != 0)
             {
-                var product = _context.Product.Where(product => product.Id == id && product.Name == productName).SingleOrDefault();
+                var product = _context.Product.Where(product => product.Id == id).SingleOrDefault();
                 var imageList = _context.Image;
                 var ratingList = _context.Rating;
                 var sizeList = _context.Size;

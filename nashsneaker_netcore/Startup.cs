@@ -11,7 +11,6 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using NashSneaker.Data;
-using NashSneaker.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,32 +43,6 @@ namespace NashSneaker
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<NashSneakerContext>();
 
-            services.AddAuthentication(option =>
-            {
-                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-            }).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = Configuration["Jwt:Issuer"],
-                    ValidAudience = Configuration["Jwt:Issuer"],
-                    ClockSkew = TimeSpan.Zero,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-                };
-            });
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AdminAccess", policy => policy.RequireRole("Admin"));
-                options.AddPolicy("UserAccess", policy => policy.RequireAssertion(context => context.User.IsInRole("Admin") || context.User.IsInRole("User")));
-            });
-
             services.AddDistributedMemoryCache();
 
             services.AddSession(options =>
@@ -83,10 +56,9 @@ namespace NashSneaker
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
+            services.AddCors();
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddScoped<JwtService>();
-            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,7 +81,7 @@ namespace NashSneaker
             app.UseRouting();
 
             app.UseCors(options => options
-                .WithOrigins("https://localhost:44357", "http://localhost:3000")
+                .WithOrigins("https://localhost:44348", "http://localhost:3000", "https://localhost:44357")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials());

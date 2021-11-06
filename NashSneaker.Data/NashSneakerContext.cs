@@ -26,6 +26,13 @@ namespace NashSneaker.Data
         public DbSet<Product> Product { get; set; }
         public DbSet<Category> Category { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            //optionsBuilder
+            //    .UseSqlServer("Server=TROYNGUYEEN\\SQLEXPRESS_2021;Database=NashSneaker;Trusted_Connection=True;MultipleActiveResultSets=true")
+            //    .EnableSensitiveDataLogging();
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
