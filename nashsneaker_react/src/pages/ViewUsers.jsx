@@ -91,7 +91,7 @@ const ViewUsers = () => {
             'RoleName': roleName
         }
 
-        axios.put('https://localhost:44357/api/Admin/UpdateUserRole', data,
+        axios.put('https://localhost:44348/api/Admin/UpdateUserRole', data,
         {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem("jwt")}`
@@ -105,7 +105,7 @@ const ViewUsers = () => {
     }
 
     const handleShowRoles = (obj) => {
-        axios.get('https://localhost:44357/api/Admin/GetRoles', 
+        axios.get('https://localhost:44348/api/Admin/GetRoles', 
         {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem("jwt")}`
