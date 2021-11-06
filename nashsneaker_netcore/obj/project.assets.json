@@ -2260,6 +2260,21 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "NashSneaker.Data/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.11",
+          "Microsoft.EntityFrameworkCore": "5.0.11",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.11"
+        },
+        "compile": {
+          "bin/placeholder/NashSneaker.Data.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NashSneaker.Data.dll": {}
+        }
       }
     }
   },
@@ -7728,6 +7743,11 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
+    },
+    "NashSneaker.Data/1.0.0": {
+      "type": "project",
+      "path": "../NashSneaker.Data/NashSneaker.Data.csproj",
+      "msbuildProject": "../NashSneaker.Data/NashSneaker.Data.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -7740,6 +7760,7 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.11",
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.11",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.2",
+      "NashSneaker.Data >= 1.0.0",
       "System.IdentityModel.Tokens.Jwt >= 6.13.1"
     ]
   },
@@ -7774,7 +7795,11 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\NashSneaker\\NashSneaker.Data\\NashSneaker.Data.csproj": {
+              "projectPath": "C:\\NashSneaker\\NashSneaker.Data\\NashSneaker.Data.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

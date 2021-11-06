@@ -7,8 +7,4 @@ build_property.PublishSingleFile =
 build_property.IncludeAllContentForSelfExtract = 
 build_property._SupportedPlatformList = Android,iOS,Linux,macOS,Windows
 build_property.RootNamespace = NashSneaker
-<<<<<<< HEAD:nashsneaker_netcore/obj/Release/net5.0/NashSneaker.GeneratedMSBuildEditorConfig.editorconfig
-build_property.ProjectDir = C:\NashSneaker\NashSneaker\nashsneaker_netcore\
-=======
-build_property.ProjectDir = C:\NashSneaker\NashSneaker\ASP.NET Core\
->>>>>>> c92bb91ee9c949ae44a50a7b8a852dc3b9d032d5:ASP.NET Core/obj/Release/net5.0/NashSneaker.GeneratedMSBuildEditorConfig.editorconfig
+build_property.ProjectDir = C:\NashSneaker\nashsneaker_netcore\
