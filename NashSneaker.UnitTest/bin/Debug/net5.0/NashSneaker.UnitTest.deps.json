@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v5.0": {
       "NashSneaker.UnitTest/1.0.0": {
         "dependencies": {
+          "HttpContextMoq": "1.2.1",
           "Microsoft.EntityFrameworkCore.InMemory": "5.0.11",
           "Microsoft.NET.Test.Sdk": "16.9.4",
           "Moq": "4.16.1",
@@ -43,6 +44,17 @@
         }
       },
       "coverlet.collector/3.0.2": {},
+      "HttpContextMoq/1.2.1": {
+        "dependencies": {
+          "Moq": "4.16.1"
+        },
+        "runtime": {
+          "lib/net5.0/HttpContextMoq.dll": {
+            "assemblyVersion": "1.2.1.0",
+            "fileVersion": "1.2.1.0"
+          }
+        }
+      },
       "Humanizer.Core/2.2.0": {
         "dependencies": {
           "NETStandard.Library": "1.6.1"
@@ -2395,6 +2407,13 @@
       "sha512": "sha512-iBvPAIDaI7j/iMx/DzCGCJ3rdiOmel9VINEfaTiBv/NKIGHOP4X3hqc6Q1wgMtArEshlhXexQknP17SK4vXb1w==",
       "path": "coverlet.collector/3.0.2",
       "hashPath": "coverlet.collector.3.0.2.nupkg.sha512"
+    },
+    "HttpContextMoq/1.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WE4OFtY01Kes8dXAODh/ewyuLz27N6rOsB7dF+96lPyp3cnawjx3XfnZdEesLuM/r2+zyHRDvRXmtNXG6sOJ+w==",
+      "path": "httpcontextmoq/1.2.1",
+      "hashPath": "httpcontextmoq.1.2.1.nupkg.sha512"
     },
     "Humanizer.Core/2.2.0": {
       "type": "package",
