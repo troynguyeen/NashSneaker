@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "cQLdIr7ApuD8m1surzshdvIeTjTeK9ERZikrkVQc2wvAbzMUS/W3jIBjvkvhUte4DFdyQHjRCGrDQnJqosLPHg==",
+  "dgSpecHash": "IK0ojZAwC3notYF7CIv6Peb3ikfVPAeg8bfmsZWHLLjjXmgs0miJKuY3g6BTtPHch1Ef/llk4S6vsBarsZialQ==",
   "success": true,
   "projectFilePath": "C:\\NashSneaker\\NashSneaker.UnitTest\\NashSneaker.UnitTest.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ThanhPC\\.nuget\\packages\\castle.core\\4.4.0\\castle.core.4.4.0.nupkg.sha512",
     "C:\\Users\\ThanhPC\\.nuget\\packages\\coverlet.collector\\3.0.2\\coverlet.collector.3.0.2.nupkg.sha512",
+    "C:\\Users\\ThanhPC\\.nuget\\packages\\httpcontextmoq\\1.2.1\\httpcontextmoq.1.2.1.nupkg.sha512",
     "C:\\Users\\ThanhPC\\.nuget\\packages\\humanizer.core\\2.2.0\\humanizer.core.2.2.0.nupkg.sha512",
     "C:\\Users\\ThanhPC\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.11\\microsoft.aspnetcore.authentication.jwtbearer.5.0.11.nupkg.sha512",
     "C:\\Users\\ThanhPC\\.nuget\\packages\\microsoft.aspnetcore.cors\\2.2.0\\microsoft.aspnetcore.cors.2.2.0.nupkg.sha512",

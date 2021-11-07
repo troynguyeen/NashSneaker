@@ -8,7 +8,6 @@ C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\NashSneaker.Views.pdb
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\NashSneaker.deps.json
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\NashSneaker.runtimeconfig.json
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\NashSneaker.runtimeconfig.dev.json
-C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\NashSneaker.StaticWebAssets.xml
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\NashSneaker.exe
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\appsettings.Development.json
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\appsettings.json
@@ -244,3 +243,4 @@ C:\NashSneaker\NashSneaker.UnitTest\obj\Debug\net5.0\NashSneaker.UnitTest.genrun
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\Castle.Core.dll
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\Moq.dll
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.InMemory.dll
+C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\HttpContextMoq.dll

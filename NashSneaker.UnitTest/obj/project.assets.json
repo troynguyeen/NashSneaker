@@ -29,6 +29,21 @@
           "build/netstandard1.0/coverlet.collector.targets": {}
         }
       },
+      "HttpContextMoq/1.2.1": {
+        "type": "package",
+        "dependencies": {
+          "Moq": "4.16.1"
+        },
+        "compile": {
+          "lib/net5.0/HttpContextMoq.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/HttpContextMoq.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Humanizer.Core/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -3517,6 +3532,54 @@
         "coverlet-icon.png",
         "coverlet.collector.3.0.2.nupkg.sha512",
         "coverlet.collector.nuspec"
+      ]
+    },
+    "HttpContextMoq/1.2.1": {
+      "sha512": "WE4OFtY01Kes8dXAODh/ewyuLz27N6rOsB7dF+96lPyp3cnawjx3XfnZdEesLuM/r2+zyHRDvRXmtNXG6sOJ+w==",
+      "type": "package",
+      "path": "httpcontextmoq/1.2.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "httpcontextmoq.1.2.1.nupkg.sha512",
+        "httpcontextmoq.nuspec",
+        "lib/net5.0/HttpContextMoq.dll",
+        "lib/net5.0/HttpContextMoq.pdb",
+        "lib/netcoreapp3.0/HttpContextMoq.dll",
+        "lib/netcoreapp3.0/HttpContextMoq.pdb",
+        "lib/netcoreapp3.1/HttpContextMoq.dll",
+        "lib/netcoreapp3.1/HttpContextMoq.pdb",
+        "lib/netstandard2.0/HttpContextMoq.dll",
+        "lib/netstandard2.0/HttpContextMoq.pdb",
+        "lib/netstandard2.1/HttpContextMoq.dll",
+        "lib/netstandard2.1/HttpContextMoq.pdb",
+        "src/HttpContextMoq/ClaimsIdentityMock.cs",
+        "src/HttpContextMoq/ClaimsPrincipalMock.cs",
+        "src/HttpContextMoq/ConnectionInfoMock.cs",
+        "src/HttpContextMoq/Extensions/ContextExtensions.cs",
+        "src/HttpContextMoq/FeatureCollectionMock.cs",
+        "src/HttpContextMoq/FormCollectionMock.cs",
+        "src/HttpContextMoq/FormFileCollectionMock.cs",
+        "src/HttpContextMoq/Generic/IContextMock.cs",
+        "src/HttpContextMoq/Generic/IContextMocks.cs",
+        "src/HttpContextMoq/Generic/MockCollection.cs",
+        "src/HttpContextMoq/HeaderDictionaryFake.cs",
+        "src/HttpContextMoq/HeaderDictionaryMock.cs",
+        "src/HttpContextMoq/HttpContextAccessorMock.cs",
+        "src/HttpContextMoq/HttpContextMock.cs",
+        "src/HttpContextMoq/HttpContextMoq.csproj",
+        "src/HttpContextMoq/HttpRequestMock.cs",
+        "src/HttpContextMoq/HttpResponseMock.cs",
+        "src/HttpContextMoq/ItemsDictionaryFake.cs",
+        "src/HttpContextMoq/ItemsDictionaryMock.cs",
+        "src/HttpContextMoq/QueryCollectionFake.cs",
+        "src/HttpContextMoq/QueryCollectionMock.cs",
+        "src/HttpContextMoq/RequestCookieCollectionFake.cs",
+        "src/HttpContextMoq/RequestCookieCollectionMock.cs",
+        "src/HttpContextMoq/ResponseCookiesMock.cs",
+        "src/HttpContextMoq/ServiceProviderMock.cs",
+        "src/HttpContextMoq/SessionFeatureFake.cs",
+        "src/HttpContextMoq/SessionMock.cs"
       ]
     },
     "Humanizer.Core/2.2.0": {
@@ -10859,6 +10922,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "HttpContextMoq >= 1.2.1",
       "Microsoft.EntityFrameworkCore.InMemory >= 5.0.11",
       "Microsoft.NET.Test.Sdk >= 16.9.4",
       "Moq >= 4.16.1",
@@ -10924,6 +10988,10 @@
       "net5.0": {
         "targetAlias": "net5.0",
         "dependencies": {
+          "HttpContextMoq": {
+            "target": "Package",
+            "version": "[1.2.1, )"
+          },
           "Microsoft.EntityFrameworkCore.InMemory": {
             "target": "Package",
             "version": "[5.0.11, )"
