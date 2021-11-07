@@ -534,3 +534,6 @@ C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.New
 C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
 C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\NashSneaker.Data.dll
 C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\NashSneaker.Data.pdb
+C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\Microsoft.AspNetCore.Http.Features.dll
+C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
+C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\System.IO.Pipelines.dll
