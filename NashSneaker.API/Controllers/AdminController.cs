@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using NashSneaker.Data;
+using NashSneaker.Data.ViewModel;
 using NashSneaker.Helpers;
 using NashSneaker.ViewModel;
 using System;
@@ -471,6 +472,150 @@ namespace NashSneaker.Controllers
                 _context.SaveChanges();
 
                 return Ok(new { message = "Delete product successfully." });
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("Orders")]
+        public IActionResult Orders()
+        {
+            var users = _context.Users.ToList();
+            var orders = _context.Order.ToList();
+            var orderDetails = _context.OrderDetail.ToList();
+
+            return Ok(orders);
+        }
+
+        [HttpPut("EditOrder")]
+        public IActionResult EditOrder(EditOrderViewModel vm)
+        {
+            if (_context.Order.Any(x => x.Id == vm.Id))
+            {
+                var order = _context.Order.SingleOrDefault(x => x.Id == vm.Id);
+                order.RecipientName = vm.RecipientName;
+                order.PhoneNumber = vm.PhoneNumber;
+                order.Address = vm.Address;
+                order.PaymentMethod = vm.PaymentMethod;
+                order.Status = vm.Status;
+
+                _context.SaveChanges();
+
+                return Ok(new { message = "Edit order successfully." });
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("DeleteOrder/{id}")]
+        public IActionResult DeleteOrder(int id)
+        {
+            if (_context.Order.Any(x => x.Id == id))
+            {
+                var order = _context.Order.SingleOrDefault(x => x.Id == id);
+                var orderDetails = _context.OrderDetail.Where(x => x.Order == order);
+
+                _context.RemoveRange(orderDetails);
+                _context.Remove(order);
+                _context.SaveChanges();
+
+                return Ok(new { message = "Delete order successfully." });
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("GetOrderById/{id}")]
+        public IActionResult GetOrderById(int id)
+        {
+            if(_context.Order.Any(x => x.Id == id))
+            {
+                var users = _context.Users.ToList();
+                var order = _context.Order.SingleOrDefault(x => x.Id == id);
+                var orderDetails = _context.OrderDetail.Where(x => x.Order == order).ToList();
+                var products = _context.Product.ToList();
+                var categories = _context.Category.ToList();
+                var images = _context.Image.ToList();
+
+                foreach (var item in categories)
+                {
+                    item.Products = new List<Product>();
+                }
+
+                return Ok(order);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut("EditProductFromOrderDetail")]
+        public IActionResult EditProductFromOrderDetail(EditProductFromOrderDetailViewModel vm)
+        {
+            if (_context.OrderDetail.Any(x => x.Id == vm.orderDetailId))
+            {
+                var products = _context.Product.ToList();
+                var orders = _context.Order.ToList();
+                var orderDetail = _context.OrderDetail.SingleOrDefault(x => x.Id == vm.orderDetailId);
+                orderDetail.Quantity = vm.quantity;
+
+                _context.SaveChanges();
+
+                //Update totalAmount for Order
+                int totalAmount = 0;
+                var order = _context.Order.SingleOrDefault(x => x.Id == orderDetail.Order.Id);
+                var orderDetails = _context.OrderDetail.Where(x => x.Order == order).ToList();
+
+                foreach(var item in orderDetails)
+                {
+                    totalAmount += (int) item.Product.Price * item.Quantity;
+                }
+
+                order.TotalAmount = totalAmount;
+                _context.SaveChanges();
+
+                return Ok(new { message = "Edit Product from Order Detail successfully." });
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("DeleteProductFromOrderDetail/{id}")]
+        public IActionResult DeleteProductFromOrderDetail(int id)
+        {
+            if (_context.OrderDetail.Any(x => x.Id == id))
+            {
+                var products = _context.Product.ToList();
+                var orders = _context.Order.ToList();
+                var orderDetail = _context.OrderDetail.SingleOrDefault(x => x.Id == id);
+                var OrderId = orderDetail.Order.Id;
+
+                _context.Remove(orderDetail);
+                _context.SaveChanges();
+
+                //Update totalAmount for Order
+                int totalAmount = 0;
+                var order = _context.Order.SingleOrDefault(x => x.Id == OrderId);
+                var orderDetails = _context.OrderDetail.Where(x => x.Order == order).ToList();
+
+                foreach (var item in orderDetails)
+                {
+                    totalAmount += (int)item.Product.Price * item.Quantity;
+                }
+
+                order.TotalAmount = totalAmount;
+                _context.SaveChanges();
+
+                return Ok(new { message = "Delete Product from Order Detail successfully." });
             }
             else
             {
