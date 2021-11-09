@@ -95,7 +95,7 @@ namespace NashSneaker.UnitTest
 
             var category = new Category
             {
-                Id = 43,
+                Id = 45,
                 Name = "test 02",
                 Description = "test description 02"
             };
@@ -118,7 +118,7 @@ namespace NashSneaker.UnitTest
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
 
             // Act
-            var response = await httpClient.DeleteAsync("https://localhost:44348/api/Admin/DeleteCategory/43");
+            var response = await httpClient.DeleteAsync("https://localhost:44348/api/Admin/DeleteCategory/45");
             var json = response.Content.ReadAsStringAsync().Result;
 
             // Assert

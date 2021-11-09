@@ -24,7 +24,7 @@ namespace NashSneaker.UnitTest
         {
             //create In Memory Database
             var options = new DbContextOptionsBuilder<NashSneakerContext>()
-            .UseInMemoryDatabase(databaseName: "NashSneaker")
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
             //// Create mocked Context by seeding Data as per Schema///
@@ -81,7 +81,7 @@ namespace NashSneaker.UnitTest
         {
             //create In Memory Database
             var options = new DbContextOptionsBuilder<NashSneakerContext>()
-            .UseInMemoryDatabase(databaseName: "NashSneaker")
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
             //// Create mocked Context by seeding Data as per Schema///
@@ -159,7 +159,7 @@ namespace NashSneaker.UnitTest
         {
             //create In Memory Database
             var options = new DbContextOptionsBuilder<NashSneakerContext>()
-            .UseInMemoryDatabase(databaseName: "NashSneaker")
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
             //// Create mocked Context by seeding Data as per Schema///
