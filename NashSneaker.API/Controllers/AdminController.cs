@@ -207,7 +207,6 @@ namespace NashSneaker.Controllers
             {
                 return BadRequest();
             }
-            
         }
 
         [HttpPost("AddNewCategory")]
@@ -269,7 +268,7 @@ namespace NashSneaker.Controllers
                 return BadRequest();
             }
         }
-
+        
         [HttpGet("Products")]
         public IActionResult Products()
         {
@@ -332,7 +331,7 @@ namespace NashSneaker.Controllers
                 foreach (var item in vm.imagesFile)
                 {
                     var image = new Image();
-                    image.Name = Path.GetFileNameWithoutExtension(item.FileName) + "_" + DateTime.Now.ToString("ssfff");
+                    image.Name = Path.GetFileNameWithoutExtension(item.FileName) + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmssfff");
                     //save each image & get imageName + extension
                     image.Path = await SaveImage(item, item.FileName);
                     image.Product = _product;
@@ -366,7 +365,7 @@ namespace NashSneaker.Controllers
 
         public async Task<string> SaveImage(IFormFile imageFile, string imageName)
         {
-            string _imageName = Path.GetFileNameWithoutExtension(imageName) + "_" + DateTime.Now.ToString("ssfff") + Path.GetExtension(imageName);
+            string _imageName = Path.GetFileNameWithoutExtension(imageName) + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmssfff") + Path.GetExtension(imageName);
             var imagePath = Path.Combine("C:\\NashSneaker\\nashsneaker_netcore\\wwwroot\\images\\products", _imageName);
             using( var fileStream = new FileStream(imagePath, FileMode.Create))
             {
