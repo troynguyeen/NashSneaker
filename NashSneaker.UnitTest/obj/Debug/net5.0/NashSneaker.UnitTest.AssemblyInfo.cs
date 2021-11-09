@@ -12,6 +12,9 @@ using System;
 using System.Reflection;
 
 [assembly: Microsoft.AspNetCore.Identity.UI.UIFrameworkAttribute("Bootstrap4")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("NashSneaker.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\NashSneaker\\NashSneaker.API", "NashSneaker.API.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("NashSneaker.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\NashSneaker\\NashSneaker.Data", "NashSneaker.Data.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("NashSneaker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\NashSneaker\\nashsneaker_netcore", "NashSneaker.csproj", "0")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("NashSneaker.UnitTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
