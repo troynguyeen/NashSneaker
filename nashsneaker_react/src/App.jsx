@@ -19,6 +19,7 @@ import ViewUsers from './pages/ViewUsers';
 import CategoryForm from './pages/Categories/CategoryForm';
 import ProductForm from './pages/Products/ProductForm';
 import Orders from './pages/Orders/Orders';
+import OrderForm from './pages/Orders/OrderForm';
 import Profile from './pages/Profile';
 
 const useStyles = makeStyles((theme) => ({
@@ -243,6 +244,7 @@ function App() {
             <Route exact path='/products/edit/:id' component={() => <ProductForm />} />
             <Route exact path='/view-users' component={() => <ViewUsers />} />
             <Route exact path='/orders' component={() => <Orders />} />
+            <Route exact path='/orders/edit/:id' component={() => <OrderForm />} />
             <Route exact path='/profile' component={() => <Profile setFullName={setFullName} />} />
             <Route path='*' component={() => <div>404 Not Found!</div>}/>
           </Switch>

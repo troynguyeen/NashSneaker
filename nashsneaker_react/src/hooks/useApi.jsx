@@ -112,6 +112,7 @@ const useApi = (initialValue) => {
 
     return {
         list,
+        setList,
         values,
         setValues,
         message,
