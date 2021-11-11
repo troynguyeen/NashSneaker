@@ -1,0 +1,15 @@
+C:\NashSneaker\NashSneaker.Data\bin\Release\net5.0\NashSneaker.Data.deps.json
+C:\NashSneaker\NashSneaker.Data\bin\Release\net5.0\NashSneaker.Data.runtimeconfig.json
+C:\NashSneaker\NashSneaker.Data\bin\Release\net5.0\NashSneaker.Data.runtimeconfig.dev.json
+C:\NashSneaker\NashSneaker.Data\bin\Release\net5.0\NashSneaker.Data.dll
+C:\NashSneaker\NashSneaker.Data\bin\Release\net5.0\ref\NashSneaker.Data.dll
+C:\NashSneaker\NashSneaker.Data\bin\Release\net5.0\NashSneaker.Data.pdb
+C:\NashSneaker\NashSneaker.Data\obj\Release\net5.0\NashSneaker.Data.csproj.AssemblyReference.cache
+C:\NashSneaker\NashSneaker.Data\obj\Release\net5.0\NashSneaker.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\NashSneaker\NashSneaker.Data\obj\Release\net5.0\NashSneaker.Data.AssemblyInfoInputs.cache
+C:\NashSneaker\NashSneaker.Data\obj\Release\net5.0\NashSneaker.Data.AssemblyInfo.cs
+C:\NashSneaker\NashSneaker.Data\obj\Release\net5.0\NashSneaker.Data.csproj.CoreCompileInputs.cache
+C:\NashSneaker\NashSneaker.Data\obj\Release\net5.0\NashSneaker.Data.dll
+C:\NashSneaker\NashSneaker.Data\obj\Release\net5.0\ref\NashSneaker.Data.dll
+C:\NashSneaker\NashSneaker.Data\obj\Release\net5.0\NashSneaker.Data.pdb
+C:\NashSneaker\NashSneaker.Data\obj\Release\net5.0\NashSneaker.Data.genruntimeconfig.cache

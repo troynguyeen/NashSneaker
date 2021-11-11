@@ -87,7 +87,7 @@ const OrderDetailTable = (props) => {
     useEffect(async () => {
        if(quantityAtOrderDetail.orderDetailId != '' && quantityAtOrderDetail.quantity != '') {
         props.setMessage('');
-        const response = await axios.put('https://localhost:44348/api/Admin/EditProductFromOrderDetail', quantityAtOrderDetail,
+        const response = await axios.put('https://nashsneaker-api.azurewebsites.net/api/Admin/EditProductFromOrderDetail', quantityAtOrderDetail,
             {
                 headers: {
                   'Authorization': `Bearer ${localStorage.getItem("jwt")}`
@@ -114,7 +114,7 @@ const OrderDetailTable = (props) => {
             }
             else {
                 props.setMessage('');
-                const response = await axios.delete(`https://localhost:44348/api/Admin/DeleteProductFromOrderDetail/${id}`,
+                const response = await axios.delete(`https://nashsneaker-api.azurewebsites.net/api/Admin/DeleteProductFromOrderDetail/${id}`,
                 {
                     headers: {
                       'Authorization': `Bearer ${localStorage.getItem("jwt")}`
