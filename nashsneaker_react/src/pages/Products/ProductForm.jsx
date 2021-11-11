@@ -117,7 +117,7 @@ const ProductForm = () => {
 
         if(values.images != null && images.length == 0) {
             const imagePath = []
-            values.images.map(img => imagePath.push({data_url: serverUrl + img.path, path: img.path}))
+            values.images.map(img => imagePath.push({data_url: img.path, path: img.path}))
             setImages(imagePath)
         }
     }, [values])
@@ -138,7 +138,7 @@ const ProductForm = () => {
                     formData.append('imagesFile', img.file);
                 }
             })
-            imagesDelete.map(img => formData.append('imagesDelete', img));
+            imagesDelete.map(img => formData.append('imagesDelete', img.replace('https://nashsneaker.blob.core.windows.net/images/', '')));
 
             //this the data for sizes because I have no time to make the UI
             const sizes = [39, 40, 41];

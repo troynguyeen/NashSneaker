@@ -254,7 +254,7 @@ const OrderDetailTable = (props) => {
                                                     showThumbs={false}
                                                     onClickItem={() => handleOpenModal(record.product.id)}
                                                 >
-                                                    {record.product.images.map(img => <img src={serverUrl + img.path} />)}
+                                                    {record.product.images.map(img => <img src={img.path} />)}
                                                 </Carousel>
                                             </TableCell>
                                             <TableCell align="left">{record.product.name}</TableCell>
@@ -308,7 +308,7 @@ const OrderDetailTable = (props) => {
                                                     transitionTime={1000}
                                                     showThumbs={false}
                                                 >
-                                                    {images.map(img => <img src={serverUrl + img.path} />)}
+                                                    {images.map(img => <img src={img.path} />)}
                                                 </Carousel>
                                             </Grid>
                                         </Paper>
