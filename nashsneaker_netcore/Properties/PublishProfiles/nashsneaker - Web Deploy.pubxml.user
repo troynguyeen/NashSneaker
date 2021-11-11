@@ -7,7 +7,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAMCENC6sKK0WqpL8iEtdQFgAAAAACAAAAAAAQZgAAAAEAACAAAAAGyV2pTrs74clzpnMgn+rxhfVVyrU++2tzlaQHw/kj+AAAAAAOgAAAAAIAACAAAAB+ZA2XN8K4FMyYqdpuNeCRcbzRHu3zrvwQSjO0wTsv44AAAABtjB57PkYMRgVPCE3Ruuz4c3vP6cNZ8jdHulyrfkQtTl0BlbetpCuzaN9/kgDdYY9TRaGOuYrx3GclI+yuyJityHU5hbSNLMMEVB+th8UOp2lQry5wf0oTsHo6JNMBxOn839C9rD0ysEZ62MBwnxem8WB6C0iqLP0ETBRUmyiDu0AAAADRXVUVzcar+6EP8rsuQexET0D+q/wz7o/a5DyyZbVcne0OF1uJJuhAXO+hSuk9SZ+yCdGCqEvCMq+tHXKf/3FA</EncryptedPassword>
-    <History>True|2021-11-11T10:36:39.5550970Z;True|2021-11-11T17:16:25.6611945+07:00;True|2021-11-11T16:14:12.6022774+07:00;</History>
+    <History>True|2021-11-11T15:08:55.0281023Z;True|2021-11-11T17:36:39.5550970+07:00;True|2021-11-11T17:16:25.6611945+07:00;True|2021-11-11T16:14:12.6022774+07:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <EFMigrations Include="NashSneaker.Data.NashSneakerContext">

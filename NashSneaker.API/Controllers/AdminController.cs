@@ -261,6 +261,13 @@ namespace NashSneaker.Controllers
             if (_context.Category.Any(x => x.Id == id))
             {
                 var category = _context.Category.SingleOrDefault(x => x.Id == id);
+
+                //Check this category was assigned to any products
+                if (_context.Product.Any(x => x.Category == category))
+                {
+                    return BadRequest();
+                }
+
                 _context.Remove(category);
                 _context.SaveChanges();
 
@@ -480,12 +487,20 @@ namespace NashSneaker.Controllers
             if (_context.Product.Any(x => x.Id == id))
             {
                 var product = _context.Product.SingleOrDefault(x => x.Id == id);
+
+                //Check this product exist in orders
+                if(_context.OrderDetail.Any(x => x.Product == product))
+                {
+                    return BadRequest();
+                }
+
                 var sizes = _context.Size.Where(x => x.Product == product);
                 var ratings = _context.Rating.Where(x => x.Product == product);
                 var images = _context.Image.Where(x => x.Product == product);
-                var cartDetails = _context.CartDetail.Where(x => x.Product == product);
+                var cartDetails = _context.CartDetail.Where(x => x.Product == product).ToList();
+                var carts = _context.Cart.ToList();
 
-                foreach(var img in images)
+                foreach (var img in images)
                 {
                     //DeleteImage(img.Path);
 
@@ -500,6 +515,17 @@ namespace NashSneaker.Controllers
 
                 _context.Remove(product);
                 _context.SaveChanges();
+
+                // Check if cart be null it will be deleted
+                foreach (var item in cartDetails)
+                {
+                    var cart = _context.Cart.SingleOrDefault(x => x.Id == item.Cart.Id);
+                    if(!_context.CartDetail.Any(x => x.Cart == cart) && cart != null)
+                    {
+                        _context.Remove(cart);
+                        _context.SaveChanges();
+                    }
+                }
 
                 return Ok(new { message = "Delete product successfully." });
             }
