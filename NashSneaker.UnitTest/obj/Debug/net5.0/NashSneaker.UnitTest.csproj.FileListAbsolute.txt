@@ -528,3 +528,9 @@ C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\Microsoft.Extensions.Depend
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\System.Linq.Dynamic.Core.dll
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\WebMotions.Fake.Authentication.JwtBearer.dll
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\BCrypt.Net-Next.dll
+C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\Azure.Core.dll
+C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\Azure.Storage.Blobs.dll
+C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\Azure.Storage.Common.dll
+C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\System.Memory.Data.dll
+C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\NashSneaker.BlobServices.dll
+C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\NashSneaker.BlobServices.pdb
