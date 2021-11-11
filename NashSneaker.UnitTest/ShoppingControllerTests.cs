@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using NashSneaker.BlobServices;
 using NashSneaker.Controllers;
 using NashSneaker.Data;
 using System;
@@ -11,7 +12,7 @@ namespace NashSneaker.UnitTest
     public class ShoppingControllerTests
     {
         [Fact]
-        public void Detail_WithProductHavingId10_ReturnsProductHavingId10()
+        public async void Detail_WithProductHavingId10_ReturnsProductHavingId10()
         {
             //create In Memory Database
             var options = new DbContextOptionsBuilder<NashSneakerContext>()
@@ -35,11 +36,12 @@ namespace NashSneaker.UnitTest
             }
 
             //Arrange
+            var mockBlobService = new Mock<IBlobService>();
             var mockContext = new NashSneakerContext(options);
-            var controller = new ShoppingController(mockContext);
+            var controller = new ShoppingController(mockContext, mockBlobService.Object);
 
             //Action
-            var result = controller.Detail(10) as ViewResult;
+            var result = await controller.Detail(10) as ViewResult;
             var product = (Product) result.ViewData.Model;
 
             //Assert

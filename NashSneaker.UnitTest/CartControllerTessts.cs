@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using NashSneaker.BlobServices;
 using NashSneaker.Controllers;
 using NashSneaker.Data;
 using System;
@@ -62,7 +63,8 @@ namespace NashSneaker.UnitTest
             int quantity = 3;
             int size = 42;
             var mockContext = new NashSneakerContext(options);
-            var controller = new CartController(mockContext);
+            var mockBlobService = new Mock<IBlobService>();
+            var controller = new CartController(mockContext, mockBlobService.Object);
             controller.ControllerContext.HttpContext = new DefaultHttpContext();
             controller.ControllerContext.HttpContext.Session = sessionMock.Object;
 
@@ -139,7 +141,8 @@ namespace NashSneaker.UnitTest
             int quantity = 3;
             int size = 42;
             var mockContext = new NashSneakerContext(options);
-            var controller = new CartController(mockContext);
+            var mockBlobService = new Mock<IBlobService>();
+            var controller = new CartController(mockContext, mockBlobService.Object);
             controller.ControllerContext.HttpContext = new DefaultHttpContext();
             controller.ControllerContext.HttpContext.Session = sessionMock.Object;
 
@@ -216,7 +219,8 @@ namespace NashSneaker.UnitTest
             int productId = 10;
             int size = 42;
             var mockContext = new NashSneakerContext(options);
-            var controller = new CartController(mockContext);
+            var mockBlobService = new Mock<IBlobService>();
+            var controller = new CartController(mockContext, mockBlobService.Object);
             controller.ControllerContext.HttpContext = new DefaultHttpContext();
             controller.ControllerContext.HttpContext.Session = sessionMock.Object;
 

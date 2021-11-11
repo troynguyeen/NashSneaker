@@ -157,3 +157,11 @@ C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\NashSneaker.pdb
 C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\Microsoft.AspNetCore.Http.Features.dll
 C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
 C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\System.IO.Pipelines.dll
+C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\Azure.Core.dll
+C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\Azure.Storage.Blobs.dll
+C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\Azure.Storage.Common.dll
+C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\System.Memory.Data.dll
+C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\NashSneaker.StaticWebAssets.xml
+C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\NashSneaker.BlobServices.dll
+C:\NashSneaker\NashSneaker.API\bin\Debug\net5.0\NashSneaker.BlobServices.pdb
+C:\NashSneaker\NashSneaker.API\obj\Debug\net5.0\NashSneaker.API.csproj.CopyComplete

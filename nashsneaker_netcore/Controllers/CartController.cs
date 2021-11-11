@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NashSneaker.BlobServices;
 using NashSneaker.Data;
 using System;
 using System.Collections.Generic;
@@ -10,14 +11,16 @@ namespace NashSneaker.Controllers
 {
     public class CartController : Controller
     {
-        private NashSneakerContext _context;
+        private readonly NashSneakerContext _context;
+        private readonly IBlobService _blobService;
 
-        public CartController(NashSneakerContext context)
+        public CartController(NashSneakerContext context, IBlobService blobService)
         {
             _context = context;
+            _blobService = blobService;
         }
 
-        public IActionResult Index(string userId)
+        public async Task<IActionResult> Index(string userId)
         {
             int counter = 0;
             var user = _context.Users.SingleOrDefault(user => user.Id == userId);
@@ -25,6 +28,12 @@ namespace NashSneaker.Controllers
             var image = _context.Image.ToList();
             var cart = _context.Cart.SingleOrDefault(cart => cart.User == user);
             var cartDetailList = _context.CartDetail.Where(detail => detail.Cart.User == user).ToList();
+
+            // This for getting images from Azure Blob Storage
+            foreach (var item in image)
+            {
+                item.Path = await _blobService.GetBlob(item.Path, "images");
+            }
 
             foreach (var item in cartDetailList)
             {

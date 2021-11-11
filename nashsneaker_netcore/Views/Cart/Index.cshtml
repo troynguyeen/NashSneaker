@@ -64,7 +64,7 @@
                                             <tr class="@item.Product.Id" data-content="@item.Size">
                                                 <td>
                                                     <div class="product-info" style="display: flex; align-items: center;">
-                                                        <img width="100" src="/images/products/@item.Product.Images.ElementAt(0).Path" alt="product" />
+                                                        <img width="100" src="@item.Product.Images.ElementAt(0).Path" alt="product" />
                                                         <div>
                                                             <a href="@Url.Action("Detail", "Shopping", new { productName = item.Product.Name, id = item.Product.Id })">
                                                                 @item.Product.Name
