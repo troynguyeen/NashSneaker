@@ -114,7 +114,7 @@ namespace NashSneaker.API
             app.UseRouting();
 
             app.UseCors(options => options
-                .WithOrigins("https://localhost:44348", "http://localhost:3000", "https://localhost:44357")
+                .WithOrigins("https://localhost:44348", "http://localhost:3000", "https://localhost:44357", "https://nashsneaker-admin.azurewebsites.net")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials());
