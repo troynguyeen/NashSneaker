@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NashSneaker.API", "..\NashS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NashSneaker.Data", "..\NashSneaker.Data\NashSneaker.Data.csproj", "{E5340D40-F7BB-4654-8A02-513F9069B90D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NashSneaker.UnitTest", "..\NashSneaker.UnitTest\NashSneaker.UnitTest.csproj", "{FA899E30-9C32-4CD9-BB34-C345E4AAA75E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NashSneaker.UnitTest", "..\NashSneaker.UnitTest\NashSneaker.UnitTest.csproj", "{FA899E30-9C32-4CD9-BB34-C345E4AAA75E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NashSneaker.BlobServices", "..\NashSneaker.BlobService\NashSneaker.BlobServices.csproj", "{127AACC0-3E00-4DDE-A7F2-A50A938BAFF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{FA899E30-9C32-4CD9-BB34-C345E4AAA75E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA899E30-9C32-4CD9-BB34-C345E4AAA75E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA899E30-9C32-4CD9-BB34-C345E4AAA75E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{127AACC0-3E00-4DDE-A7F2-A50A938BAFF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{127AACC0-3E00-4DDE-A7F2-A50A938BAFF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{127AACC0-3E00-4DDE-A7F2-A50A938BAFF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{127AACC0-3E00-4DDE-A7F2-A50A938BAFF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

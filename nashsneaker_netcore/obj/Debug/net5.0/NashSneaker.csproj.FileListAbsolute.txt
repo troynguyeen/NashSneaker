@@ -537,3 +537,9 @@ C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\NashSneaker.Data.pdb
 C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\Microsoft.AspNetCore.Http.Features.dll
 C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
 C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\System.IO.Pipelines.dll
+C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\Azure.Core.dll
+C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\Azure.Storage.Blobs.dll
+C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\Azure.Storage.Common.dll
+C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\System.Memory.Data.dll
+C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\NashSneaker.BlobServices.dll
+C:\NashSneaker\nashsneaker_netcore\bin\Debug\net5.0\NashSneaker.BlobServices.pdb

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NashSneaker.BlobServices;
 using NashSneaker.Data;
 using System;
 using System.Collections.Generic;
@@ -9,19 +10,28 @@ namespace NashSneaker.Controllers
 {
     public class ShoppingController : Controller
     {
-        private NashSneakerContext _context;
+        private readonly NashSneakerContext _context;
+        private readonly IBlobService _blobService;
 
-        public ShoppingController(NashSneakerContext context)
+        public ShoppingController(NashSneakerContext context, IBlobService blobService)
         {
             _context = context;
+            _blobService = blobService;
         }
 
-        public IActionResult Index(string categoryName)
+        public async Task<IActionResult> Index(string categoryName)
         {
             if(categoryName == "All Shoes")
             {
                 var productList = _context.Product.ToList();
-                var imageList = _context.Image;
+                var imageList = _context.Image.ToList();
+
+                // This for getting images from Azure Blob Storage
+                foreach (var item in imageList)
+                {
+                    item.Path = await _blobService.GetBlob(item.Path, "images");
+                }
+
                 foreach (var item in productList)
                 {
                     item.Images = imageList.Where(image => image.Product.Id == item.Id).ToList();
@@ -36,7 +46,13 @@ namespace NashSneaker.Controllers
                 var imageList = _context.Image;
                 var categoryList = _context.Category.ToList();
 
-                if(productList.Count() > 0)
+                // This for getting images from Azure Blob Storage
+                foreach (var item in imageList)
+                {
+                    item.Path = await _blobService.GetBlob(item.Path, "images");
+                }
+
+                if (productList.Count() > 0)
                 {
                     foreach (var item in productList)
                     {
@@ -55,7 +71,7 @@ namespace NashSneaker.Controllers
             }
         }
 
-        public IActionResult Detail(int id)
+        public async Task<IActionResult> Detail(int id)
         {
             if (id != 0)
             {
@@ -64,7 +80,13 @@ namespace NashSneaker.Controllers
                 var ratingList = _context.Rating;
                 var sizeList = _context.Size;
                 var category = _context.Category.ToList();
-                
+
+                // This for getting images from Azure Blob Storage
+                foreach (var item in imageList)
+                {
+                    item.Path = await _blobService.GetBlob(item.Path, "images");
+                }
+
                 product.Ratings = ratingList.Where(rating => rating.Product.Id == product.Id).ToList();
                 product.Images = imageList.Where(image => image.Product.Id == product.Id).ToList();
                 product.Sizes = sizeList.Where(size => size.Product.Id == product.Id).OrderBy(x => x.Name).ToList();
@@ -103,12 +125,18 @@ namespace NashSneaker.Controllers
             _context.SaveChanges();
         }
 
-        public IActionResult Search(string keyword)
+        public async Task<IActionResult> Search(string keyword)
         {
             var productList = _context.Product.Where(x => x.Name.Contains(keyword) || keyword == null).ToList();
             var imageList = _context.Image;
 
-            if(productList.Count() == 0)
+            // This for getting images from Azure Blob Storage
+            foreach (var item in imageList)
+            {
+                item.Path = await _blobService.GetBlob(item.Path, "images");
+            }
+
+            if (productList.Count() == 0)
             {
                 productList = new List<Product>();
                 productList.Add(new Product());
