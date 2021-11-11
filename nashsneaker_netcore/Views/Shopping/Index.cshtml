@@ -123,7 +123,7 @@
                                         </div>
                                     </div>
                                     <div class="product-content">
-                                        <h4><a href="product-single.html">@item.Name</a></h4>
+                                        <h4><a href="@Url.Action("Detail", "Shopping", new { id = item.Id })">@item.Name</a></h4>
                                         <p class="price">@item.Price VND</p>
                                     </div>
                                 </div>
