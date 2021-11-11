@@ -1,3 +1,4 @@
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NashSneaker.BlobServices;
 using NashSneaker.Data;
 using NashSneaker.Helpers;
 using System;
@@ -36,6 +38,15 @@ namespace NashSneaker.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Injecting the connection string from the app settings
+            var blobConnection = Configuration.GetValue<string>("BlobConnection");
+
+            // Injecting the blobServiceClient into out DI container
+            services.AddSingleton(x => new BlobServiceClient(blobConnection));
+
+            // Inject the blobService into the DI
+            services.AddSingleton<IBlobService, BlobService>();
+
             services.AddDbContext<NashSneakerContext>(options =>
                   options.UseSqlServer(Configuration.GetConnectionString("NashSneakerContextConnection")));
 

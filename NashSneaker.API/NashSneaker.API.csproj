@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.11" />
@@ -13,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NashSneaker.BlobService\NashSneaker.BlobServices.csproj" />
     <ProjectReference Include="..\NashSneaker.Data\NashSneaker.Data.csproj" />
     <ProjectReference Include="..\nashsneaker_netcore\NashSneaker.csproj" />
   </ItemGroup>
