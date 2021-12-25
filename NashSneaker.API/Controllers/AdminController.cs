@@ -114,11 +114,7 @@ namespace NashSneaker.Controllers
                 userVM.Email = item.Email;
                 userVM.PhoneNumber = item.PhoneNumber;
                 userVM.Role = role.Name;
-
-                if(userVM.Role != "Admin")
-                {
-                    listUserVM.Add(userVM);
-                }
+                listUserVM.Add(userVM);
             }
 
             return Ok(listUserVM);
@@ -127,7 +123,7 @@ namespace NashSneaker.Controllers
         [HttpGet("GetRoles")]
         public IActionResult GetRoles()
         {
-            var roles = _context.Roles.Where(x => x.Name != "Admin").ToList();
+            var roles = _context.Roles.ToList();
             return Ok(roles);
         }
 
@@ -289,7 +285,9 @@ namespace NashSneaker.Controllers
             // This for getting images from Azure Blob Storage
             foreach(var item in images)
             {
-                item.Path = await _blobService.GetBlob(item.Path, "images");
+                //item.Path = await _blobService.GetBlob(item.Path, "images");
+                // For localhost
+                item.Path = "https://localhost:44357/images/products/" + item.Path;
             }
 
             foreach(var item in categories)
@@ -312,7 +310,9 @@ namespace NashSneaker.Controllers
                 // This for getting images from the container of Blob Storage
                 foreach (var item in images)
                 {
-                    item.Path = await _blobService.GetBlob(item.Path, "images");
+                    //item.Path = await _blobService.GetBlob(item.Path, "images");
+                    // For localhost
+                    item.Path = "https://localhost:44357/images/products/" + item.Path;
                 }
 
                 foreach (var item in categories)
@@ -356,10 +356,10 @@ namespace NashSneaker.Controllers
                     image.Name = Path.GetFileNameWithoutExtension(item.FileName) + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmssfff");
                     image.Path = Path.GetFileNameWithoutExtension(item.FileName) + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmssfff") + Path.GetExtension(item.FileName);
                     //save each image & get imageName + extension
-                    //image.Path = await SaveImage(item, item.FileName);
+                    image.Path = await SaveImage(item, item.FileName);
 
                     // This for uploading the image into the container of Blob Storage
-                    await _blobService.UploadBlob(image.Path, item, "images");
+                    //await _blobService.UploadBlob(image.Path, item, "images");
 
                     image.Product = _product;
                     images.Add(image);
@@ -434,10 +434,10 @@ namespace NashSneaker.Controllers
                         {
                             //Delete each image in this list
                             var imageDelete = _context.Image.SingleOrDefault(x => x.Path == item);
-                            //DeleteImage(item);
+                            DeleteImage(item);
 
                             // This for deleting the image from the container of Blob Storage
-                            await _blobService.DeleteBlob(item, "images");
+                            //await _blobService.DeleteBlob(item, "images");
 
                             _context.Remove(imageDelete);
                             _context.SaveChanges();
@@ -454,10 +454,10 @@ namespace NashSneaker.Controllers
                             image.Name = Path.GetFileNameWithoutExtension(item.FileName) + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmssfff");
                             image.Path = Path.GetFileNameWithoutExtension(item.FileName) + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmssfff") + Path.GetExtension(item.FileName);
                             //save each image & get imageName + extension
-                            //image.Path = await SaveImage(item, item.FileName);
+                            image.Path = await SaveImage(item, item.FileName);
 
                             // This for uploading the image into the container of Blob Storage
-                            await _blobService.UploadBlob(image.Path, item, "images");
+                            //await _blobService.UploadBlob(image.Path, item, "images");
                             image.Product = product;
                             _images.Add(image);
                         }
@@ -502,10 +502,10 @@ namespace NashSneaker.Controllers
 
                 foreach (var img in images)
                 {
-                    //DeleteImage(img.Path);
+                    DeleteImage(img.Path);
 
                     // This for deleting the image from the container of Blob Storage
-                    await _blobService.DeleteBlob(img.Path, "images");
+                    //await _blobService.DeleteBlob(img.Path, "images");
                 }
 
                 _context.RemoveRange(sizes);
@@ -602,7 +602,9 @@ namespace NashSneaker.Controllers
                 // This for getting images from Azure Blob Storage
                 foreach (var item in images)
                 {
-                    item.Path = await _blobService.GetBlob(item.Path, "images");
+                    //item.Path = await _blobService.GetBlob(item.Path, "images");
+                    // For localhost
+                    item.Path = "https://localhost:44357/images/products/" + item.Path;
                 }
 
                 foreach (var item in categories)

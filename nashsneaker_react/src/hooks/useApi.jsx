@@ -23,7 +23,7 @@ const useApi = (initialValue) => {
     //GET API
     const FetchAPI = async (ApiName) => {
         try {
-            const response = await axios.get(`https://nashsneaker-api.azurewebsites.net/api/Admin/${ApiName}`, 
+            const response = await axios.get(`https://localhost:44348/api/Admin/${ApiName}`, 
             {
                 headers: {
                   'Authorization': `Bearer ${localStorage.getItem("jwt")}`
@@ -40,7 +40,7 @@ const useApi = (initialValue) => {
     //GET API by Id
     const GetByIdAPI = async (ApiName, id) => {
         try {
-            const response = await axios.get(`https://nashsneaker-api.azurewebsites.net/api/Admin/${ApiName}/${id}`, 
+            const response = await axios.get(`https://localhost:44348/api/Admin/${ApiName}/${id}`, 
             {
                 headers: {
                   'Authorization': `Bearer ${localStorage.getItem("jwt")}`
@@ -57,7 +57,7 @@ const useApi = (initialValue) => {
     //POST API
     const PostAPI = async (ApiName, formData = null) => {
         try {
-            const response = await axios.post(`https://nashsneaker-api.azurewebsites.net/api/Admin/${ApiName}`, formData != null ? formData : values,
+            const response = await axios.post(`https://localhost:44348/api/Admin/${ApiName}`, formData != null ? formData : values,
             {
                 headers: {
                   'Authorization': `Bearer ${localStorage.getItem("jwt")}`
@@ -76,7 +76,7 @@ const useApi = (initialValue) => {
     //PUT API
     const PutAPI = async (ApiName, formData = null) => {
         try {
-            const response = await axios.put(`https://nashsneaker-api.azurewebsites.net/api/Admin/${ApiName}`, formData != null ? formData : values,
+            const response = await axios.put(`https://localhost:44348/api/Admin/${ApiName}`, formData != null ? formData : values,
             {
                 headers: {
                   'Authorization': `Bearer ${localStorage.getItem("jwt")}`
@@ -95,7 +95,7 @@ const useApi = (initialValue) => {
     //DELETE API
     const DeleteAPI = async (ApiName, id) => {
         try {
-            const response = await axios.delete(`https://nashsneaker-api.azurewebsites.net/api/Admin/${ApiName}/${id}`,
+            const response = await axios.delete(`https://localhost:44348/api/Admin/${ApiName}/${id}`,
             {
                 headers: {
                   'Authorization': `Bearer ${localStorage.getItem("jwt")}`

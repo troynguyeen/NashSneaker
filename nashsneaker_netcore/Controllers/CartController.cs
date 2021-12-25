@@ -32,7 +32,9 @@ namespace NashSneaker.Controllers
             // This for getting images from Azure Blob Storage
             foreach (var item in image)
             {
-                item.Path = await _blobService.GetBlob(item.Path, "images");
+                //item.Path = await _blobService.GetBlob(item.Path, "images");
+                // For localhost
+                item.Path = "/images/products/" + item.Path;
             }
 
             foreach (var item in cartDetailList)
