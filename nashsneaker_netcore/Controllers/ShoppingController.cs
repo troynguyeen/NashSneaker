@@ -29,7 +29,9 @@ namespace NashSneaker.Controllers
                 // This for getting images from Azure Blob Storage
                 foreach (var item in imageList)
                 {
-                    item.Path = await _blobService.GetBlob(item.Path, "images");
+                    //item.Path = await _blobService.GetBlob(item.Path, "images");
+                    // For localhost
+                    item.Path = "/images/products/" + item.Path;
                 }
 
                 foreach (var item in productList)
@@ -49,7 +51,9 @@ namespace NashSneaker.Controllers
                 // This for getting images from Azure Blob Storage
                 foreach (var item in imageList)
                 {
-                    item.Path = await _blobService.GetBlob(item.Path, "images");
+                    //item.Path = await _blobService.GetBlob(item.Path, "images");
+                    // For localhost
+                    item.Path = "/images/products/" + item.Path;
                 }
 
                 if (productList.Count() > 0)
@@ -84,7 +88,9 @@ namespace NashSneaker.Controllers
                 // This for getting images from Azure Blob Storage
                 foreach (var item in imageList)
                 {
-                    item.Path = await _blobService.GetBlob(item.Path, "images");
+                    //item.Path = await _blobService.GetBlob(item.Path, "images");
+                    // For localhost
+                    item.Path = "/images/products/" + item.Path;
                 }
 
                 product.Ratings = ratingList.Where(rating => rating.Product.Id == product.Id).ToList();
@@ -133,7 +139,9 @@ namespace NashSneaker.Controllers
             // This for getting images from Azure Blob Storage
             foreach (var item in imageList)
             {
-                item.Path = await _blobService.GetBlob(item.Path, "images");
+                //item.Path = await _blobService.GetBlob(item.Path, "images");
+                // For localhost
+                item.Path = "/images/products/" + item.Path;
             }
 
             if (productList.Count() == 0)

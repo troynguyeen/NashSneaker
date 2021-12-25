@@ -84,7 +84,7 @@ const Profile = (props) => {
     }, [message])
 
     const fetchProfile = async () => {
-        const response = await axios.get('https://nashsneaker-api.azurewebsites.net/api/Admin/Profile',
+        const response = await axios.get('https://localhost:44348/api/Admin/Profile',
         {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem("jwt")}`

@@ -91,7 +91,7 @@ const ViewUsers = () => {
             'RoleName': roleName
         }
 
-        axios.put('https://nashsneaker-api.azurewebsites.net/api/Admin/UpdateUserRole', data,
+        axios.put('https://localhost:44348/api/Admin/UpdateUserRole', data,
         {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem("jwt")}`
@@ -105,7 +105,7 @@ const ViewUsers = () => {
     }
 
     const handleShowRoles = (obj) => {
-        axios.get('https://nashsneaker-api.azurewebsites.net/api/Admin/GetRoles', 
+        axios.get('https://localhost:44348/api/Admin/GetRoles', 
         {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem("jwt")}`
@@ -256,9 +256,13 @@ const ViewUsers = () => {
                                                 }
                                             </TableCell>
                                             <TableCell align="center">
-                                                <Button onClick={() => handleShowRoles({userId: record.id, roleName: record.role})}>
-                                                    <EditIcon color="primary"/>
-                                                </Button>
+                                                {
+                                                    record.role !== 'Admin' ?
+                                                    <Button onClick={() => handleShowRoles({userId: record.id, roleName: record.role})}>
+                                                        <EditIcon color="primary"/>
+                                                    </Button>
+                                                    : ''
+                                                }
                                             </TableCell>
                                         </TableRow>
                                     );

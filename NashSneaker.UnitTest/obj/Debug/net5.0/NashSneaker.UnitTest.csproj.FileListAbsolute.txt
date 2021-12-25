@@ -534,3 +534,5 @@ C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\Azure.Storage.Common.dll
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\System.Memory.Data.dll
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\NashSneaker.BlobServices.dll
 C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\NashSneaker.BlobServices.pdb
+C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\NashSneaker.StaticWebAssets.xml
+C:\NashSneaker\NashSneaker.UnitTest\bin\Debug\net5.0\NashSneaker.API.StaticWebAssets.xml
